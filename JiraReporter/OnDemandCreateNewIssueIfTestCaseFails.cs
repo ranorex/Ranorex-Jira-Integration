@@ -70,12 +70,12 @@ namespace JiraReporter
           set { _JiraUserName = value; }
         }
         
-        string _Jira_ProjectKey = "";
+        string _JiraProjectKey = "";
         [TestVariable("B9F47338-E1BF-4131-82E1-F2C69B8CFD3D")]
-        public string Jira_ProjectKey
+        public string JiraProjectKey
         {
-          get { return _Jira_ProjectKey; }
-          set { _Jira_ProjectKey = value; }
+          get { return _JiraProjectKey; }
+          set { _JiraProjectKey = value; }
         }
         
         string _JiraIssueType = "Bug";
@@ -112,7 +112,7 @@ namespace JiraReporter
                                             JiraCLIFileLocation, JiraServerURL, JiraUserName, JiraPassword);
             
             string actionCreateIssue = String.Format("--action createIssue --project {0} --type \"1\" --summary \"{2}\" ",
-                                                     Jira_ProjectKey, issueTypeId, JiraSummary);
+                                                     JiraProjectKey, issueTypeId, JiraSummary);
             
             string actionAddAttachment = String.Format("--action addAttachment --issue %KEY% --file \"{0}\" ", 
                                                        System.IO.Path.Combine(Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportFileDirectory, reportFileName));
@@ -183,7 +183,7 @@ namespace JiraReporter
               Report.LogHtml(ReportLevel.Info, String.Format("Jira issue ready for creation : <a href=\"file:///{0}\" > Create Issue </a>", batfileLocation));
               Report.Info(String.Format("Used BatchFile: {0};  Original location: {1}", batFileName, batfileLocation));
               Report.LogHtml(ReportLevel.Info, String.Format("Link to Jira project: <a href=\"{0}/browse/{1} \"> {1} </a>", 
-                                                             JiraReporter.ServerURL, Jira_ProjectKey));
+                                                             JiraReporter.ServerURL, JiraProjectKey));
             }
             catch(Exception e)
             {
