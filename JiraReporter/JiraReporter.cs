@@ -50,7 +50,7 @@ namespace JiraReporter
     {
       _client = new TechTalk.JiraRestClient.JiraClient(serverURL, user,password);
       _serverURL = serverURL;
-      var info = _client.GetServerInfo();
+      _info = _client.GetServerInfo();
     }
 
     public static JiraIssue CreateIssue(string testCaseName, string summary, string description, List<string> labels, string issueType, string projectKey, bool attachReport)

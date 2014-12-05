@@ -11,24 +11,24 @@ rxversion="5.2.0.20272">
 			id="38dabd8a-9965-41d5-a0ec-63b481316fc6"
 			defaultvalue="ModuleGroupDefaultValue">
 				<modulevariable
-				name="Jira_IssueKey"
+				name="JiraIssueKey"
 				variableref="30890A5D-0962-4C63-B96C-6A2A4094636C"
 				moduleref="be0d2a80-766b-45dd-b3be-8122627c9b71"/>
 				<modulevariable
-				name="Jira_IssueKey"
-				variableref="763880E1-C9E1-4CCE-B626-898390004888"
-				moduleref="c1c2d76d-c502-430b-9b9a-77274cb23732"/>
-				<modulevariable
-				name="Jira_IssueKey"
+				name="JiraIssueKey"
 				variableref="861CFAE9-60E6-409F-99D0-1BED4082BB01"
 				moduleref="28f09da1-fccc-47e9-b60e-0cafd1840db6"/>
+				<modulevariable
+				name="JiraIssueKey"
+				variableref="763880E1-C9E1-4CCE-B626-898390004888"
+				moduleref="c1c2d76d-c502-430b-9b9a-77274cb23732"/>
 			</groupvariable>
 			<groupvariable
 			name="Jira_Summary"
 			id="c553f073-b545-4803-9809-9101a473c26e"
 			defaultvalue="ModuleGroupDefaultValue">
 				<modulevariable
-				name="Jira_Summary"
+				name="JiraSummary"
 				variableref="A17CCC90-3800-4B66-89F6-33025E95CD83"
 				moduleref="28f09da1-fccc-47e9-b60e-0cafd1840db6"/>
 			</groupvariable>
@@ -37,7 +37,7 @@ rxversion="5.2.0.20272">
 			id="f0f50b66-28f2-401c-9661-de7e5d463f2d"
 			defaultvalue="ModuleGroupDefaultValue">
 				<modulevariable
-				name="Jira_Description"
+				name="JiraDescription"
 				variableref="2CBA8E0D-CE84-447D-80D2-4044B4CC4735"
 				moduleref="28f09da1-fccc-47e9-b60e-0cafd1840db6"/>
 			</groupvariable>
@@ -46,7 +46,7 @@ rxversion="5.2.0.20272">
 			id="eca73a52-3e87-4cdf-9ed5-f456e5b41e6b"
 			defaultvalue="ModuleGroupDefaultValue">
 				<modulevariable
-				name="Jira_Labels"
+				name="JiraLabels"
 				variableref="1BFCEF2A-F7F4-484C-ADE6-18F6ABC8DFE2"
 				moduleref="28f09da1-fccc-47e9-b60e-0cafd1840db6"/>
 			</groupvariable>
