@@ -102,6 +102,23 @@ namespace JiraReporter
           set { _JiraSummary = value; }
         }
         
+        string _JiraBatchFileFolderLocation = "";
+        [TestVariable("059A3ED0-68B3-4F55-B17D-6C0266B28016")]
+        public string JiraBatchFileFolderLocation
+        {
+          get { return _JiraBatchFileFolderLocation; }
+          set { _JiraBatchFileFolderLocation = value; }
+        }
+        
+        string _JiraLabels = "";
+        [TestVariable("DB921E51-216C-40AD-AD1A-DA693C53551C")]
+        public string JiraLabels
+        {
+          get { return _JiraLabels; }
+          set { _JiraLabels = value; }
+        }
+        
+        
         //-----------------------------------------------------------------------------------------
         
         void writeBatchFile(string batFileName, string issueTypeId, string reportFileName, string testcaseName)
@@ -110,9 +127,18 @@ namespace JiraReporter
             // Jira WebService calls for CLI environment
             string jiraCall = String.Format("CALL java -jar \"{0}\" --server {1} --user {2} --password {3} ", 
                                             JiraCLIFileLocation, JiraServerURL, JiraUserName, JiraPassword);
-            
+                       
             string actionCreateIssue = String.Format("--action createIssue --project {0} --type \"1\" --summary \"{2}\" ",
                                                      JiraProjectKey, issueTypeId, JiraSummary);
+            
+            
+            if(!string.IsNullOrEmpty(JiraLabels))
+            {
+              char delimiterChar = ';';
+              var labels = JiraLabels.Replace(delimiterChar, ' ');
+              actionCreateIssue = actionCreateIssue + String.Format("--labels \"{0}\" ", labels);
+            }
+            
             
             string actionAddAttachment = String.Format("--action addAttachment --issue %KEY% --file \"{0}\" ", 
                                                        System.IO.Path.Combine(Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportFileDirectory, reportFileName));
@@ -170,12 +196,30 @@ namespace JiraReporter
               string batFileName = String.Format("createJiraIssue_{0}_{1}.bat", tc.Name, 
                                                  Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportViewFileName);
               
+              System.IO.FileInfo fi = null;
+              try
+              {
+                fi = new System.IO.FileInfo(JiraCLIFileLocation);
+              }
+              catch(Exception e)
+              {
+                Report.Warn("Jira CLI file not accessible; please check path to file! (Exception: " + e.Message +")");
+              }
+              
               // create batch file, which is triggered from the report to create an issue
               writeBatchFile(batFileName, id, reportFileName, tc.Name);
               
               // copy batch file to the final reporting folder if needed
-              var batfileLocation = System.IO.Path.Combine(Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportFileDirectory, batFileName);
-              if(Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportFileDirectory != System.IO.Directory.GetCurrentDirectory())
+              var batfileLocation = "";
+              if(String.IsNullOrEmpty(JiraBatchFileFolderLocation))
+                batfileLocation = System.IO.Path.Combine(Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportFileDirectory, batFileName);
+              else
+              {
+                fi = new System.IO.FileInfo(JiraBatchFileFolderLocation);
+                batfileLocation = System.IO.Path.Combine(JiraBatchFileFolderLocation, batFileName);
+              }
+              
+              if(batfileLocation != System.IO.Directory.GetCurrentDirectory())
                 File.Copy(batFileName, batfileLocation, true);
               
               // create link to trigger the batch file
