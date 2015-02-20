@@ -52,20 +52,23 @@
     <Reference Include="Ranorex.Plugin.Qt, Version=$(RanorexVersion)" />
     <Reference Include="Ranorex.Plugin.RawText, Version=$(RanorexVersion)" />
     <Reference Include="Ranorex.Plugin.Sap, Version=$(RanorexVersion)" />
+    <Reference Include="Ranorex.Plugin.Uia, Version=$(RanorexVersion)" />
     <Reference Include="Ranorex.Plugin.Web, Version=$(RanorexVersion)" />
     <Reference Include="Ranorex.Plugin.Win32, Version=$(RanorexVersion)" />
     <Reference Include="Ranorex.Plugin.WinForms, Version=$(RanorexVersion)" />
     <Reference Include="Ranorex.Plugin.Wpf, Version=$(RanorexVersion)" />
-    <Reference Include="RestSharp">
-      <HintPath>RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\JiraRestClient-master\JiraRestClient\TechTalk.JiraRestClient\bin\Debug\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TechTalk.JiraRestClient">
-      <HintPath>TechTalk.JiraRestClient.dll</HintPath>
+    <Reference Include="TechTalk.JiraRestClient, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\JiraRestClient-master\JiraRestClient\TechTalk.JiraRestClient\bin\Debug\TechTalk.JiraRestClient.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -102,7 +102,16 @@ namespace JiraReporter
             }
             catch(Exception e)
             {
-              Report.Error(e.Message + " (InnerException: " + e.InnerException + ")");
+              var inner = e.InnerException;
+              string str = "";
+              if(inner != null)
+              {
+                var prop = inner.GetType().GetProperty("ErrorResponse");
+                if(prop != null)
+                  str = (string)prop.GetValue(e.InnerException, null);
+              }
+
+              Report.Error(e.Message + " (InnerException: " + e.InnerException + " -- " + str + ")");
             }
           }
           

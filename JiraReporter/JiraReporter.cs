@@ -55,25 +55,28 @@ namespace JiraReporter
 
     public static JiraIssue CreateIssue(string testCaseName, string summary, string description, List<string> labels, string issueType, string projectKey, bool attachReport)
     {
-      CheckIfClientConnected();
+        CheckIfClientConnected();
 
-      TechTalk.JiraRestClient.IssueFields fields = new TechTalk.JiraRestClient.IssueFields();
+        TechTalk.JiraRestClient.IssueFields fields = new TechTalk.JiraRestClient.IssueFields();
 
-      fields.summary = testCaseName + ": " + summary;
-      fields.description = description;
-      fields.labels = labels;
+        fields.summary = testCaseName + ": " + summary;
+        fields.description = description;
+        fields.labels = labels;
+        fields.timetracking = null;
 
-      // not supported by the JiraClient yet
-      //fields.issuePriority = "1";
+        // not supported by the JiraClient yet
+        //fields.issuePriority = "1";
 
-      if (GetIssueType(issueType) == null)
-        throw (new Exception(String.Format("Issue Type '{0}' not found!", issueType)));
+        if (GetIssueType(issueType) == null)
+          throw (new Exception(String.Format("Issue Type '{0}' not found!", issueType)));
 
-      var createdIssue = _client.CreateIssue(projectKey, issueType, fields);
-      if(attachReport)
-        UploadRannorexReport(createdIssue);
+        var createdIssue = _client.CreateIssue(projectKey, issueType, fields);
+        if (attachReport)
+          UploadRannorexReport(createdIssue);
 
-      return(new JiraIssue(createdIssue.key, createdIssue.id));
+        var issue = new JiraIssue(createdIssue.key, createdIssue.id);
+
+        return (issue);
     }
     
     public static JiraIssue ReOpenIssue(string issueKey)
@@ -192,7 +195,7 @@ namespace JiraReporter
       {
         if (type.name == issueType)
           return type;
-        available = available + type.name + " ";
+        available = available + type.name + "; ";
       }
 
       Ranorex.Report.Error("Issue type '" + issueType + "' not found! Available types: " + available.TrimEnd());
