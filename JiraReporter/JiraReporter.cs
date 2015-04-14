@@ -84,6 +84,8 @@ namespace JiraReporter
       CheckIfClientConnected();
 
       var curIssue = _client.LoadIssue(issueKey);
+      if (curIssue == null)
+        throw (new Exception(String.Format("Could not load issue '{0}'!", issueKey)));
 
       JiraIssue issue = null;
 
@@ -107,6 +109,8 @@ namespace JiraReporter
       CheckIfClientConnected();
 
       var curIssue = _client.LoadIssue(issueKey);
+      if(curIssue == null)
+        throw (new Exception(String.Format("Could not load issue '{0}'!", issueKey)));
 
       JiraIssue issue = null;
 
@@ -134,11 +138,25 @@ namespace JiraReporter
       CheckIfClientConnected();
 
       var curIssue = _client.LoadIssue(issueKey);
+      if (curIssue == null)
+        throw (new Exception(String.Format("Could not load issue '{0}'!", issueKey)));
 
-      curIssue.fields.summary = testCaseName + ": " + summary;
-      curIssue.fields.description = description;
+      if (!string.IsNullOrEmpty(summary))
+        curIssue.fields.summary = testCaseName + ": " + summary;
+      else
+        curIssue.fields.summary = null;
 
-      curIssue.fields.labels = labels;
+      if (!string.IsNullOrEmpty(description))
+        curIssue.fields.description = description;
+      else
+        curIssue.fields.description = null;
+
+      if (labels != null)
+        curIssue.fields.labels = labels;
+      else
+        curIssue.fields.labels = null;
+
+      curIssue.fields.timetracking = null;
 
       _client.UpdateIssue(curIssue);
       JiraReporter.UploadRannorexReport(curIssue);

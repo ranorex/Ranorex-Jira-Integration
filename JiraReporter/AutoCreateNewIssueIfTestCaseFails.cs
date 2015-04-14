@@ -88,6 +88,12 @@ namespace JiraReporter
         {
 
           var tc = TestCase.Current;
+
+          if (tc == null)
+          {
+            Report.Error("TestCase is 'null'; this usually happens when the module is used outside of testcases (e.g., global teardown).");
+          }
+
           if(tc.Status == Ranorex.Core.Reporting.ActivityStatus.Failed)
           {
             try

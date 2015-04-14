@@ -127,16 +127,16 @@ namespace JiraReporter
             // Jira WebService calls for CLI environment
             string jiraCall = String.Format("CALL java -jar \"{0}\" --server {1} --user {2} --password {3} ", 
                                             JiraCLIFileLocation, JiraServerURL, JiraUserName, JiraPassword);
-                       
-            string actionCreateIssue = String.Format("--action createIssue --project {0} --type \"1\" --summary \"{2}\" ",
-                                                     JiraProjectKey, issueTypeId, JiraSummary);
+
+            string actionCreateIssue = String.Format("--action createIssue --project {0} --type \"1\" --summary \"{2}\" --description \"{3}\" ",
+                                                     JiraProjectKey, issueTypeId, JiraSummary, JiraDescription);
             
             
             if(!string.IsNullOrEmpty(JiraLabels))
             {
               char delimiterChar = ';';
               var labels = JiraLabels.Replace(delimiterChar, ' ');
-              actionCreateIssue = actionCreateIssue + String.Format("--labels \"{0}\" ", labels);
+              actionCreateIssue = actionCreateIssue + String.Format(" --labels \"{0}\" ", labels);
             }
             
             
@@ -178,6 +178,12 @@ namespace JiraReporter
         void ITestModule.Run()
         {
           var tc = TestCase.Current;
+
+          if (tc == null)
+          {
+            Report.Error("TestCase is 'null'; this usually happens when the module is used outside of testcases (e.g., global teardown).");
+          }
+
           if(tc.Status == Ranorex.Core.Reporting.ActivityStatus.Failed)
           {
             try

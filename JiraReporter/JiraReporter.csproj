@@ -41,31 +41,15 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="Ranorex.Core, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.ChromeWeb, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Flex, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Java, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Mobile, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.MozillaWeb, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Msaa, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Office, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Qt, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.RawText, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Sap, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Uia, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Web, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Win32, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.WinForms, Version=$(RanorexVersion)" />
-    <Reference Include="Ranorex.Plugin.Wpf, Version=$(RanorexVersion)" />
+    <Reference Include="Ranorex.Core, Version=5.3.0.22324, Culture=neutral, PublicKeyToken=b798506b574ebc9a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\JiraRestClient-master\JiraRestClient\TechTalk.JiraRestClient\bin\Debug\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="TechTalk.JiraRestClient, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\JiraRestClient-master\JiraRestClient\TechTalk.JiraRestClient\bin\Debug\TechTalk.JiraRestClient.dll</HintPath>
