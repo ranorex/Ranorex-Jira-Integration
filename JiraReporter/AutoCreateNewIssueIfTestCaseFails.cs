@@ -98,7 +98,7 @@ namespace JiraReporter
               var createdIssue = JiraReporter.CreateIssue(tc.Name, JiraSummary, JiraDescription, labels, JiraIssueType, JiraProjectKey, true);
 
               Report.Info("Jira issue created -- IssueKey: " + createdIssue.Key + "; IssueID: "+ createdIssue.Id);
-              Report.LogHtml(ReportLevel.Info, "<a href=\""+ JiraReporter.ServerURL + "/browse/" + createdIssue.Key +"\">" + createdIssue.Key  +"</a>" );              
+              Report.LogHtml(ReportLevel.Info, "<a href=\""+ JiraReporter.ServerURL + "/browse/" + createdIssue.Id +"\">" + createdIssue.Id + "</a>" );              
             }
             catch(Exception e)
             {
