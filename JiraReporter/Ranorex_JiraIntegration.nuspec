@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Ranorex_JiraIntegration</id>
+    <title>Ranorex Jira Reporter</title>
+    <version>1.0.0</version>
+    <authors>Ranorex GmbH</authors>
+    <owners>Ranorex GmbH</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      Package that integrates Jira functionality into the Ranorex system.
+    </description>
+    <copyright>Copyright 2016</copyright>
+    <tags>Ranorex Jira</tags>
+    <language>en-US</language>
+    <!-- NuGet package dependency -->
+    <dependencies>
+      <dependency id="TechTalk.JiraRestClient" version="2.5.0" />
+    </dependencies>
+  </metadata>
+</package>
