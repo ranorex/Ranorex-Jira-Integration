@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <modulegroups
 name="JiraReporter"
-rxversion="5.2.0.20272">
+rxversion="7.0.0">
 	<modulegroupdef
 	name="ProcessExstingIssue"
 	id="e04049a7-762d-4df3-9f0c-12ef6472b0a1">

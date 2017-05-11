@@ -1,0 +1,14 @@
+﻿<Properties>
+  <Array name="bookmarks" />
+  <Array name="files">
+    <Element value="JiraReporter.cs" />
+    <Element value="AutoHandleJiraIntegration.cs" />
+    <Element value="InitializeJiraReporter.cs" />
+    <Element value="AbstractJiraIntegrationClient.cs" />
+  </Array>
+  <Properties name="projectSavedData">
+    <Properties name="customTool">
+      <runOnBuild value="False" />
+    </Properties>
+  </Properties>
+</Properties>

@@ -9,15 +9,8 @@
  * 
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Drawing;
-using System.Threading;
-using WinForms = System.Windows.Forms;
 
 using Ranorex;
-using Ranorex.Core;
 using Ranorex.Core.Testing;
 
 using System.IO;
@@ -177,7 +170,7 @@ namespace JiraReporter
         /// that will in turn invoke this method.</remarks>
         void ITestModule.Run()
         {
-          var tc = TestCase.Current;
+          var tc = TestSuite.CurrentTestContainer;
 
           if (tc == null)
           {
@@ -188,10 +181,6 @@ namespace JiraReporter
           {
             try
             {
-              var id = JiraReporter.GetIssueTypeID(JiraIssueType);
-              if (id == null)
-                throw (new Exception(String.Format("Issue Type '{0}' not found!", JiraIssueType)));
-
               // create intermediate zipped report
               string reportFileName =  Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportViewFileName;
               Ranorex.Core.Reporting.TestReport.SaveReport();
@@ -213,7 +202,7 @@ namespace JiraReporter
               }
               
               // create batch file, which is triggered from the report to create an issue
-              writeBatchFile(batFileName, id, reportFileName, tc.Name);
+              writeBatchFile(batFileName, JiraIssueType, reportFileName, tc.Name);
               
               // copy batch file to the final reporting folder if needed
               var batfileLocation = "";

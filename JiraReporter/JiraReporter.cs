@@ -1,15 +1,15 @@
 ﻿/*
  * Created by Ranorex
- * User: cbreit
+ * User: cbreit, sknopper
  * Date: 22.10.2014
  * Time: 18:58
- * 
- * Acknowledgement:
- * This product includes software developed by TechTalk.
  */
 
 using System;
 using System.Collections.Generic;
+using Atlassian.Jira;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace JiraReporter
 {
@@ -48,181 +48,136 @@ namespace JiraReporter
     
     public static void ConnectJiraServer(string user, string password, string serverURL)
     {
-      _client = new TechTalk.JiraRestClient.JiraClient(serverURL, user,password);
-      _serverURL = serverURL;
-      _info = _client.GetServerInfo();
+      client = Jira.CreateRestClient(serverURL, user, password);
     }
 
-    public static JiraIssue CreateIssue(string testCaseName, string summary, string description, List<string> labels, string issueType, string projectKey, bool attachReport)
+    public static JiraIssue CreateIssue(string testCaseName, string summary, string description, List<string> labels, string issueType, string projectKey, Dictionary<string, string> customFields, bool attachReport)
     {
-        CheckIfClientConnected();
+            CheckIfClientConnected();
 
-        TechTalk.JiraRestClient.IssueFields fields = new TechTalk.JiraRestClient.IssueFields();
+            if (GetIssueType(projectKey, issueType) == null)
+            {
+                throw (new Exception(String.Format("Issue Type '{0}' not found!", issueType)));
+            }
 
-        fields.summary = testCaseName + ": " + summary;
-        fields.description = description;
-        fields.labels = labels;
-        fields.timetracking = null;
+            Issue issue = client.CreateIssue(projectKey);
+            issue.Type = issueType;
+            //issue.Priority = "Major";
+            issue.Summary = testCaseName + ": " + summary;
+            issue.Description = description;
 
-        // not supported by the JiraClient yet
-        //fields.issuePriority = "1";
+            foreach (string label in labels) {
+                issue.Labels.Add(label);
+            }
 
-        if (GetIssueType(issueType) == null)
-          throw (new Exception(String.Format("Issue Type '{0}' not found!", issueType)));
+            foreach (string key in customFields.Keys)
+            {
+                string value = null;
+                customFields.TryGetValue(key, out value);
+                issue.CustomFields.Add(key, value);
+            }
+            
+            issue.SaveChanges();
 
-        var createdIssue = _client.CreateIssue(projectKey, issueType, fields);
-        if (attachReport)
-          UploadRannorexReport(createdIssue);
+            if (attachReport)
+            {
+                addRanorexReport(issue);
+            }
 
-        var issue = new JiraIssue(createdIssue.key, createdIssue.id);
+            var jiraIssue = new JiraIssue(issue.Key.ToString(), issue.JiraIdentifier);
 
-        return (issue);
+            return (jiraIssue);
     }
+
+        public static IEnumerable<Issue> getJiraIssues(string searchString)
+        {
+            CheckIfClientConnected();
+            var issues = client.Issues.GetIssuesFromJqlAsync(searchString).Result;
+            return issues;
+        }
     
-    public static JiraIssue ReOpenIssue(string issueKey)
-    {
-      CheckIfClientConnected();
-
-      var curIssue = _client.LoadIssue(issueKey);
-      if (curIssue == null)
-        throw (new Exception(String.Format("Could not load issue '{0}'!", issueKey)));
-
-      JiraIssue issue = null;
-
-      IEnumerable<TechTalk.JiraRestClient.Transition> transitions = _client.GetTransitions(curIssue);
-      foreach (TechTalk.JiraRestClient.Transition trans in transitions)
-      {
-        if (trans.to.name.Contains("Reopened"))
+    public static JiraIssue ChangeState(string issueKey, string transitionName, bool attachReport)
         {
-          trans.fields = null;
-          _client.TransitionIssue(curIssue, trans);
-          issue = new JiraIssue(curIssue.key, curIssue.id);
-          break;
+            CheckIfClientConnected();
+
+            Issue issue = client.Issues.GetIssueAsync(issueKey, CancellationToken.None).Result;
+            JiraIssue jiraIssue = new JiraIssue(issue.Key.ToString(), issue.JiraIdentifier);
+
+            issue.WorkflowTransitionAsync(transitionName).GetAwaiter().GetResult();
+
+            if (issue == null)
+            {
+                throw new Ranorex.RanorexException(String.Format("Transition '{0}' was not found, unable to change the state of the issue", transitionName));
+            }
+
+            if (attachReport)
+            {
+                addRanorexReport(issue);
+            }
+
+            issue.SaveChanges();
+            return jiraIssue;
         }
-      }
-
-      return issue;
-    }
-
-    public static JiraIssue ResolveIssue(string issueKey, bool attachReport)
-    {
-      CheckIfClientConnected();
-
-      var curIssue = _client.LoadIssue(issueKey);
-      if(curIssue == null)
-        throw (new Exception(String.Format("Could not load issue '{0}'!", issueKey)));
-
-      JiraIssue issue = null;
-
-      IEnumerable<TechTalk.JiraRestClient.Transition> transitions = _client.GetTransitions(curIssue);
-      foreach (TechTalk.JiraRestClient.Transition trans in transitions)
-      {
-        if (trans.to.name.Contains("Resolved"))
-        {
-          trans.fields = null;
-          _client.TransitionIssue(curIssue, trans);
-          issue = new JiraIssue(curIssue.key, curIssue.id);
-          break;
-        }
-      }
-
-      if (attachReport)
-        UploadRannorexReport(curIssue);
-
-      return issue;
-    }
 
     public static JiraIssue UpdateIssue(string issueKey, string testCaseName, string summary, 
       string description, List<string> labels, bool attachReport)
     {
       CheckIfClientConnected();
 
-      var curIssue = _client.LoadIssue(issueKey);
-      if (curIssue == null)
-        throw (new Exception(String.Format("Could not load issue '{0}'!", issueKey)));
+            Issue issue = client.Issues.GetIssueAsync(issueKey, CancellationToken.None).Result;
+            if (issue == null)
+            {
+                throw (new Exception(String.Format("Could not load issue '{0}'!", issueKey)));
+            }
 
       if (!string.IsNullOrEmpty(summary))
-        curIssue.fields.summary = testCaseName + ": " + summary;
-      else
-        curIssue.fields.summary = null;
+            {
+                issue.Summary = testCaseName + ": " + summary;
+            } else
+            {
+                issue.Summary = null;
+            }
 
       if (!string.IsNullOrEmpty(description))
-        curIssue.fields.description = description;
-      else
-        curIssue.fields.description = null;
+            {
+                issue.Description = description;
+            } else
+            {
+                issue.Description = null;
+            }
 
-      if (labels != null)
-        curIssue.fields.labels = labels;
-      else
-        curIssue.fields.labels = null;
-
-      curIssue.fields.timetracking = null;
-
-      _client.UpdateIssue(curIssue);
-      JiraReporter.UploadRannorexReport(curIssue);
+            issue.Labels.Clear();
+            if (labels != null)
+            {
+                foreach (string label in labels)
+                {
+                    issue.Labels.Add(label);
+                }
+            }
 
       if (attachReport)
-        UploadRannorexReport(curIssue);
+            {
+                addRanorexReport(issue);
+            }
 
-      return (new JiraIssue(curIssue.key, curIssue.id));
+            issue.SaveChanges();
+
+            return new JiraIssue(issue.Key.ToString(), issue.JiraIdentifier);
     }
 
-    public static string GetServerTitle()
+    private static void addRanorexReport(Issue issue)
     {
-      CheckIfClientConnected();
-
-      return (_info.serverTitle);
-    }
-
-    public static string GetServerVersion()
-    {
-      CheckIfClientConnected();
-
-       return (_info.version);
-    }
-
-    public static string GetIssueTypeID(string issueType)
-    {
-      CheckIfClientConnected();
-
-      var type = GetIssueType(issueType);
-      
-      if (type == null)
-        return null;
-
-
-      return type.id.ToString();
-    }
-
-    private static void UploadRannorexReport(TechTalk.JiraRestClient.IssueRef issueRef)
-    {
-      string fileName = Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportViewFileName;
+      string fileName = Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportViewFilePath;
       Ranorex.Core.Reporting.TestReport.SaveReport();
       Ranorex.Report.Zip(Ranorex.Core.Reporting.TestReport.ReportEnvironment, null, fileName);
       fileName = fileName.Replace(".rxlog", ".rxzlog");
-      System.IO.FileStream stream = System.IO.File.Open(System.IO.Path.GetFullPath(fileName), System.IO.FileMode.Open);
 
-      _client.CreateAttachment(issueRef, stream, fileName);
-    }
-
-    private static TechTalk.JiraRestClient.IssueType GetIssueType(string issueType)
-    {
-      var issueTypes = _client.GetIssueTypes();
-      string available = "";
-      foreach (TechTalk.JiraRestClient.IssueType type in issueTypes)
-      {
-        if (type.name == issueType)
-          return type;
-        available = available + type.name + "; ";
-      }
-
-      Ranorex.Report.Error("Issue type '" + issueType + "' not found! Available types: " + available.TrimEnd());
-      return null;
+      issue.AddAttachment(fileName);
     }
 
     private static void CheckIfClientConnected()
     {
-      if(_client == null)
+      if(client == null)
         throw(new Exception("Jira client not initialized -- not connecting to Jira (maybe the 'InitializeJiraReporter' was forgotten in the global 'Setup' region)!"));
     }
 
@@ -231,12 +186,24 @@ namespace JiraReporter
       get
       {
         CheckIfClientConnected();
-        return _serverURL;
+        return client.Url;
       }
     }
-    
-    static private TechTalk.JiraRestClient.IJiraClient _client = null;
-    static private TechTalk.JiraRestClient.ServerInfo  _info = null;
-    static private string _serverURL;
+
+        private static IssueType GetIssueType(string projectKey, string issueType)
+        {
+            IEnumerable<IssueType> types = client.IssueTypes.GetIssueTypesForProjectAsync(projectKey, CancellationToken.None).Result;
+            foreach (IssueType type in types)
+            {
+                if (type.Name.Equals(issueType)) {
+                    return type;
+                }
+            }
+
+            Ranorex.Report.Error("Issue type '" + issueType + "' not found! Available.");
+            return null;
+        }
+
+        static private Jira client = null;
   }
 }
