@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>JiraReporter</RootNamespace>
-    <AssemblyName>JiraReporter</AssemblyName>
+    <AssemblyName>Ranorex_JiraIntegration</AssemblyName>
     <RanorexVersion>7.0</RanorexVersion>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <projectdefaultrepository>6DAA0E69-EBD0-40DF-B6D1-8546891CC1DE</projectdefaultrepository>
@@ -123,6 +123,10 @@
     </None>
     <None Include="packages.config">
       <id>1e0dcd2f-9e04-4460-95db-5fcb92295ef1</id>
+    </None>
+    <None Include="Ranorex_JiraIntegration.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <Import Project="$(RanorexTargetsPath)" Condition="Exists('$(RanorexTargetsPath)')" />
