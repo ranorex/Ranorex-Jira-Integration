@@ -33,7 +33,7 @@ namespace JiraReporter
                 var createdIssue = JiraReporter.CreateIssue(tc.Name, JiraSummary, JiraDescription, labels, JiraIssueType, JiraProjectKey, customFields, true);
 
                 Report.Info("Jira issue created -- IssueKey: " + createdIssue.Key + "; IssueID: " + createdIssue.Id);
-                Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "/browse/" + createdIssue.Id + "\">" + createdIssue.Id + "</a>");
+                Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "browse/" + createdIssue.Id + "\">" + createdIssue.Id + "</a>");
             }
             catch (Exception e)
             {
@@ -59,7 +59,7 @@ namespace JiraReporter
                 if (curIssue != null)
                 {
                     Report.Info("Jira issue reopened -- IssueKey: " + curIssue.Key + "; IssueID: " + curIssue.Id);
-                    Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "/browse/" + curIssue.Id + "\">" + curIssue.Id + "</a>");
+                    Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "browse/" + curIssue.Id + "\">" + curIssue.Id + "</a>");
                 }
                 else
                     Report.Warn("Could not re-open Jira issue -- IssueKey: " + curIssue.Id);
@@ -89,7 +89,7 @@ namespace JiraReporter
                 if (curIssue != null)
                 {
                     Report.Info("Jira issue resolved -- IssueKey: " + curIssue.Key + "; IssueID: " + curIssue.Id);
-                    Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "/browse/" + curIssue.Id + "\">" + curIssue.Id + "</a>");
+                    Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "browse/" + curIssue.Id + "\">" + curIssue.Id + "</a>");
                 }
                 else
                     Report.Warn("Could not resolved Jira issue -- IssueKey: " + curIssue.Id);

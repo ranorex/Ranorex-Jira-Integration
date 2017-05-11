@@ -103,7 +103,7 @@ namespace JiraReporter {
             if (jqlQueryToConnectIssues.Length > 0) {
             	issues = JiraReporter.getJiraIssues(jqlQueryToConnectIssues);
             } else {
-            		issues = JiraReporter.getJiraIssues(RxAutomationFieldName + " ~ " + tc.Name);
+            		issues = JiraReporter.getJiraIssues("\"" + RxAutomationFieldName + "\" ~ \"" + tc.Name + "\"");
             }
 
             if (tc.Status == Ranorex.Core.Reporting.ActivityStatus.Failed) {
@@ -113,7 +113,7 @@ namespace JiraReporter {
                 		reopenIssue(issue.Key.ToString(), StateReopen);
                 	} else {
                 		Report.Info("Jira issue is already open -- IssueKey: " + issue.Key.ToString() + "; IssueID: " + issue.Key.ToString());
-                    	Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "/browse/" + issue.Key.ToString() + "\">" + issue.Key.ToString() + "</a>");
+                    	Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "browse/" + issue.Key.ToString() + "\">" + issue.Key.ToString() + "</a>");
                 	}
                     isEmpty = false;
                 }
