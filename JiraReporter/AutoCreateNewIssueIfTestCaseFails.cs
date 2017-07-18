@@ -78,7 +78,7 @@ namespace JiraReporter
 
             if (tc.Status == Ranorex.Core.Reporting.ActivityStatus.Failed)
           {
-            createIssue(tc, JiraLabels, JiraSummary, JiraDescription, JiraIssueType, JiraProjectKey, null);
+            createIssue(tc);
           } 
         }
     }

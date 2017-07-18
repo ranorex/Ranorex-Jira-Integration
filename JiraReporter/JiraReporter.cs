@@ -7,9 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using Atlassian.Jira;
-using System.Threading.Tasks;
+using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
+using Atlassian.Jira;
+using RestSharp.Extensions;
 
 namespace JiraReporter
 {
@@ -51,29 +53,34 @@ namespace JiraReporter
       client = Jira.CreateRestClient(serverURL, user, password);
     }
 
-    public static JiraIssue CreateIssue(string testCaseName, string summary, string description, List<string> labels, string issueType, string projectKey, Dictionary<string, string> customFields, bool attachReport)
+    public static JiraIssue CreateIssue(string testCaseName, bool attachReport)
     {
             CheckIfClientConnected();
+            JiraConfiguration config = JiraConfiguration.Instance;
 
-            if (GetIssueType(projectKey, issueType) == null)
+            if (GetIssueType(config.JiraProjectKey, config.JiraIssueType) == null)
             {
-                throw (new Exception(String.Format("Issue Type '{0}' not found!", issueType)));
+                throw (new Exception(String.Format("Issue Type '{0}' not found!", config.JiraIssueType)));
             }
 
-            Issue issue = client.CreateIssue(projectKey);
-            issue.Type = issueType;
+            Issue issue = client.CreateIssue(config.JiraProjectKey);
+            issue.Type = config.JiraIssueType;
             //issue.Priority = "Major";
-            issue.Summary = testCaseName + ": " + summary;
-            issue.Description = description;
-
-            foreach (string label in labels) {
+            issue.Summary = testCaseName + ": " + config.JiraSummary;
+            
+            if (config.RxAutomationFieldName != null && !config.customFields.ContainsKey(config.RxAutomationFieldName)) 
+            {
+            	config.customFields.Add(config.RxAutomationFieldName, testCaseName);
+            }
+            
+            foreach (string label in config.getAllLabels()) {
                 issue.Labels.Add(label);
             }
 
-            foreach (string key in customFields.Keys)
+            foreach (string key in config.customFields.Keys)
             {
                 string value = null;
-                customFields.TryGetValue(key, out value);
+                config.customFields.TryGetValue(key, out value);
                 issue.CustomFields.Add(key, value);
             }
             
@@ -83,17 +90,38 @@ namespace JiraReporter
             {
                 addRanorexReport(issue);
             }
+            
+            issue.Description = updateDescription(issue, config);
+            issue.SaveChanges();
 
             var jiraIssue = new JiraIssue(issue.Key.ToString(), issue.JiraIdentifier);
 
             return (jiraIssue);
     }
+    
+    private static string updateDescription(Issue issue, JiraConfiguration config)
+    {
+    	string descriptionString = "";
+
+    	foreach (JiraDescriptionItem item in config.JiraDescription)
+    	{
+    		descriptionString += "\r\n " + item.text;
+    		
+    		if (item.isImageEntry())
+    		{
+    			issue.AddAttachment(item.getValue());
+    			descriptionString += "\r\n !" + Path.GetFileName(item.getValue()) + "!";
+    		} 
+    	}
+    	
+    	return descriptionString;
+    }
 
         public static IEnumerable<Issue> getJiraIssues(string searchString)
         {
             CheckIfClientConnected();
-            var issues = client.Issues.GetIssuesFromJqlAsync(searchString).Result;
-            return issues;
+            var issues = client.Issues.GetIssuesFromJqlAsync(searchString);
+            return issues.Result;
         }
     
     public static JiraIssue ChangeState(string issueKey, string transitionName, bool attachReport)
@@ -175,7 +203,7 @@ namespace JiraReporter
       issue.AddAttachment(fileName);
     }
 
-    private static void CheckIfClientConnected()
+    public static void CheckIfClientConnected()
     {
       if(client == null)
         throw(new Exception("Jira client not initialized -- not connecting to Jira (maybe the 'InitializeJiraReporter' was forgotten in the global 'Setup' region)!"));

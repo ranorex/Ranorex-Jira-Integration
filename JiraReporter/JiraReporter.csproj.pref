@@ -1,9 +1,12 @@
 ﻿<Properties>
-  <Array name="bookmarks" />
+  <Array name="active">
+    <Element value="ValueExtractorHelper.cs" />
+  </Array>
+  <Array name="bookmarks">
+    <Element value="Breakpoint|C:\Users\sknopper\Documents\Ranorex-Jira-Integration\JiraReporter\ValueExtractorHelper.cs|61|64|True|Break||" />
+  </Array>
   <Array name="files">
-    <Element value="JiraReporter.cs" />
-    <Element value="AutoHandleJiraIntegration.cs" />
-    <Element value="InitializeJiraReporter.cs" />
+    <Element value="ValueExtractorHelper.cs" />
     <Element value="AbstractJiraIntegrationClient.cs" />
   </Array>
   <Properties name="projectSavedData">

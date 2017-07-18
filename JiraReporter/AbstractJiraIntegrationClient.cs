@@ -19,18 +19,11 @@ namespace JiraReporter
             return tc;
         }
 
-        protected void createIssue(ITestContainer tc, string JiraLabels, string JiraSummary, string JiraDescription, string JiraIssueType, string JiraProjectKey, string rxAutomationFieldName)
+        protected void createIssue(ITestContainer tc)
         {
             try
             {
-                char delimiterChar = ';';
-                var labels = new List<string>(JiraLabels.Split(delimiterChar));
-                Dictionary<string, string> customFields = new Dictionary<string, string>();
-                if(rxAutomationFieldName != null && !rxAutomationFieldName.Equals("")) {
-                	customFields.Add(rxAutomationFieldName, tc.Name);	
-                }
-
-                var createdIssue = JiraReporter.CreateIssue(tc.Name, JiraSummary, JiraDescription, labels, JiraIssueType, JiraProjectKey, customFields, true);
+                var createdIssue = JiraReporter.CreateIssue(tc.Name, true);
 
                 Report.Info("Jira issue created -- IssueKey: " + createdIssue.Key + "; IssueID: " + createdIssue.Id);
                 Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "browse/" + createdIssue.Id + "\">" + createdIssue.Id + "</a>");
