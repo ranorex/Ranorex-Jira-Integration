@@ -10,7 +10,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Atlassian.Jira;
+using RestSharp;
 using RestSharp.Extensions;
 
 namespace JiraReporter
@@ -65,7 +67,8 @@ namespace JiraReporter
 
             Issue issue = client.CreateIssue(config.JiraProjectKey);
             issue.Type = config.JiraIssueType;
-            //issue.Priority = "Major";
+            
+            updatePriority(issue, config.JiraIssuePriority);
             issue.Summary = testCaseName + ": " + config.JiraSummary;
             
             if (config.RxAutomationFieldName != null && !config.customFields.ContainsKey(config.RxAutomationFieldName)) 
@@ -97,6 +100,35 @@ namespace JiraReporter
             var jiraIssue = new JiraIssue(issue.Key.ToString(), issue.JiraIdentifier);
 
             return (jiraIssue);
+    }
+    
+    public static string getCurrentSprint()
+    {   	
+    	return getCurrentSprint(1);
+    }
+    
+    public static string getCurrentSprint(int sprintId) 
+    {
+    	RestRequest req = new RestRequest("/rest/agile/latest/sprint/" + sprintId);
+    	RestResponse resp = client.RestClient.RestSharpClient.ExecuteAsGet(req, "GET") as RestResponse;
+    	RestSharp.Deserializers.JsonDeserializer deSerial = new RestSharp.Deserializers.JsonDeserializer();
+    	Dictionary<string, object> item = deSerial.Deserialize<Dictionary<string, object>>(resp);
+    	
+    	object state = "";
+    	item.TryGetValue("state", out state);
+    	if (state != null && state != "" && state.Equals("closed")) {
+    	    	return getCurrentSprint(sprintId + 1);
+    	    }
+    	return sprintId.ToString();
+    }
+    
+    private static void updatePriority(Issue issue, string prio)
+    {
+    	if (prio != null)
+    	{
+    		IssuePriority p = new IssuePriority(null, prio);
+            issue.Priority = p;
+    	}
     }
     
     private static string updateDescription(Issue issue, JiraConfiguration config)

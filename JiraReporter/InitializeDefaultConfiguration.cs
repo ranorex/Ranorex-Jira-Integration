@@ -98,6 +98,14 @@ namespace JiraReporter
             set { _jqlQueryToConnectIssues = value; }
         }
         
+        string _jiraIssuePriority = "";
+        [TestVariable("153C1454-FAC1-49B6-BB0E-3126B0C1C0B1")]
+        public string jiraIssuePriority
+        {
+            get { return _jiraIssuePriority; }
+            set { _jiraIssuePriority = value; }
+        }
+        
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
@@ -154,6 +162,10 @@ namespace JiraReporter
             
             if (this.jqlQueryToConnectIssues != null) {
             	config.jqlQueryToConnectIssues = this.jqlQueryToConnectIssues;
+            }
+            
+            if (this.jiraIssuePriority != null) {
+            	config.JiraIssuePriority = jiraIssuePriority;
             }
         }
     }

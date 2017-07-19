@@ -27,6 +27,7 @@ namespace JiraReporter
         public string StateReopen { get; set; }
         public string RxAutomationFieldName { get; set; }
         public string jqlQueryToConnectIssues { get; set; }
+        public string JiraIssuePriority { get; set; }
         public Dictionary<string, string> customFields = new Dictionary<string, string>();
 
 		private JiraConfiguration()

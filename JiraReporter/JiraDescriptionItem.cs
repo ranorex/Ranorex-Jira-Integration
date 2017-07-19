@@ -15,8 +15,8 @@ namespace JiraReporter
 	/// </summary>
 	public class JiraDescriptionItem
 	{
-		public string text { get; }
-		public string filePath { get; }
+		public string text { get; set; }
+		public string filePath { get; set; }
 		
 		public JiraDescriptionItem(string text, string filePath)
 		{

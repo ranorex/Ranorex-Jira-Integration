@@ -62,6 +62,17 @@ namespace JiraReporter
     	/// within a User Code collection.
     	/// </summary>
     	[UserCodeMethod]
+    	public static string getCurrentSprintId()
+    	{
+    		return JiraReporter.getCurrentSprint();
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
     	public static void addNewLineToDescription(string line)
     	{
     		JiraConfiguration config = JiraConfiguration.Instance;

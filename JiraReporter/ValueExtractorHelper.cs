@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -46,6 +47,46 @@ namespace JiraReporter
     	/// within a User Code collection.
     	/// </summary>
     	[UserCodeMethod]
+    	public static void updateSummary()
+    	{ 		
+    		ITestContainer tc = TestSuite.CurrentTestContainer;
+    		string testCaseName = tc.Name;
+    		
+    		Ranorex.Core.Reporting.ActivityStack.Instance.VisitAll(activity => {
+    		                                                       	if ((activity.GetType().Name.Equals("TestContainerActivity")
+    		                                                       	    && activity.Status == ActivityStatus.Failed
+    		                                                       	    && (activity as ITestContainerActivity).ContainerName.Equals(testCaseName))
+                                                                          )
+                                                                       {
+    		                                                       		JiraConfiguration config = JiraConfiguration.Instance;
+    		                                                       		config.JiraSummary = getFailedAction(activity);
+                                                                       }
+    		                                       return true;                	
+    		                                                       });
+    	}
+    	
+    	private static string getFailedAction(IActivity activity)
+    	{
+    		object item = null;
+    		IList<IReportItem> list = activity.Children;
+    		item = list.Select(x => x).Where(x => !x.GetType().Name.Equals("TestSetupTeardownContainerActivity")).Last();
+    		
+    		if (item.GetType().Name.Equals("TestModuleActivity"))
+    		{
+    			return getFailedAction(item as IActivity);
+    		} else
+    		{
+    			ReportItem rItem = item as ReportItem;
+    			return rItem.Message;
+    		}
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
     	public static void updateDescriptionWithAllStepsMade()
     	{
     		IList<JiraDescriptionItem> items = JiraConfiguration.Instance.JiraDescription;
@@ -57,7 +98,7 @@ namespace JiraReporter
     		Ranorex.Core.Reporting.ActivityStack.Instance.VisitAll(activity => {
     		                                                       	if ((activity.GetType().Name.Equals("TestContainerActivity")
     		                                                       	    && activity.Status == ActivityStatus.Failed
-    		                                                       	    && (activity as ITestContainerActivity).FullDisplayName.Equals(testCaseName))
+    		                                                       	    && (activity as ITestContainerActivity).ContainerName.Equals(testCaseName))
                                                                           )
                                                                        {
     		                                                       		fillDescription(activity);
@@ -87,8 +128,19 @@ namespace JiraReporter
     					newItem = new JiraDescriptionItem((item as ReportItem).Message, null);
     				}
     				
+    				extractFilePathforInlineImage(newItem);
+    				
     				JiraConfiguration.Instance.JiraDescription.Add(newItem);
     			}
+    		}
+    	}
+    	
+    	private static void extractFilePathforInlineImage(JiraDescriptionItem item)
+    	{
+    		if (item.text.Contains("href=\"")) {
+    			int startIndex = item.text.LastIndexOf("href=");
+    			item.filePath = (item.text.Substring(startIndex)).Split('\"')[1];
+    			item.text = "";
     		}
     	}
     }
