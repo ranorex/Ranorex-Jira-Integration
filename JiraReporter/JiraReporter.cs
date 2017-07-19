@@ -69,6 +69,7 @@ namespace JiraReporter
             issue.Type = config.JiraIssueType;
             
             updatePriority(issue, config.JiraIssuePriority);
+            updateEnvironment(issue, config.JiraEnvironment);
             issue.Summary = testCaseName + ": " + config.JiraSummary;
             
             if (config.RxAutomationFieldName != null && !config.customFields.ContainsKey(config.RxAutomationFieldName)) 
@@ -84,7 +85,14 @@ namespace JiraReporter
             {
                 string value = null;
                 config.customFields.TryGetValue(key, out value);
-                issue.CustomFields.Add(key, value);
+                
+                if(key.Equals(""))
+                {
+                	Ranorex.Report.Log(Ranorex.ReportLevel.Warn, "An invalid custom field is configured for jira. field name: '" + key + "' field value: '" + value + "'");
+                } else 
+                {
+                	issue.CustomFields.Add(key, value);
+                }
             }
             
             issue.SaveChanges();
@@ -102,24 +110,31 @@ namespace JiraReporter
             return (jiraIssue);
     }
     
-    public static string getCurrentSprint()
-    {   	
-    	return getCurrentSprint(1);
+    private static void updateEnvironment(Issue issue, string envString)
+    {
+    	issue.Environment = envString;
     }
     
-    public static string getCurrentSprint(int sprintId) 
+    public static string getCurrentSprintItem(string itemKey)
+    {   	
+    	return getCurrentSprintItem(1, itemKey);
+    }
+    
+    public static string getCurrentSprintItem(int sprintId, string itemKey) 
     {
     	RestRequest req = new RestRequest("/rest/agile/latest/sprint/" + sprintId);
     	RestResponse resp = client.RestClient.RestSharpClient.ExecuteAsGet(req, "GET") as RestResponse;
     	RestSharp.Deserializers.JsonDeserializer deSerial = new RestSharp.Deserializers.JsonDeserializer();
-    	Dictionary<string, object> item = deSerial.Deserialize<Dictionary<string, object>>(resp);
+    	Dictionary<string, string> item = deSerial.Deserialize<Dictionary<string, string>>(resp);
     	
-    	object state = "";
+    	string state = "";
+    	string valueStr = "";
     	item.TryGetValue("state", out state);
     	if (state != null && state != "" && state.Equals("closed")) {
-    	    	return getCurrentSprint(sprintId + 1);
+    	    	return getCurrentSprintItem(sprintId + 1, itemKey);
     	    }
-    	return sprintId.ToString();
+    	item.TryGetValue(itemKey, out valueStr);
+    	return valueStr;
     }
     
     private static void updatePriority(Issue issue, string prio)

@@ -64,7 +64,19 @@ namespace JiraReporter
     	[UserCodeMethod]
     	public static string getCurrentSprintId()
     	{
-    		return JiraReporter.getCurrentSprint();
+    		return JiraReporter.getCurrentSprintItem("id");
+    	}
+    	
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static string getCurrentSprintName()
+    	{
+    		return JiraReporter.getCurrentSprintItem("name");
     	}
     	
     	/// <summary>
@@ -77,6 +89,67 @@ namespace JiraReporter
     	{
     		JiraConfiguration config = JiraConfiguration.Instance;
     		config.JiraDescription.Add(new JiraDescriptionItem("\r\n " + line, null));
+    	}
+    	
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void setEnvironment(string environment)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.JiraEnvironment = environment;
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void setLabels(string labels)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.JiraLabels = labels;
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void addNewLabel(string label)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.JiraLabels += ";" + label;
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void removeLabel(string label)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		string oldLabels = config.JiraLabels;
+    		string[] labels = oldLabels.Split(';');
+    		string newLabels = "";
+    		foreach (string lab in labels) {
+    			if (! newLabels.Equals("")) {
+    				newLabels += ";";
+    			}
+    			if (!lab.Equals(label)) {
+    				newLabels += lab;
+    			}
+    		}
+    		
+    		JiraFieldHelper.setLabels(newLabels);
     	}
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System.Collections;
+using System.Linq;
+using Atlassian.Jira;
 using Ranorex;
 using Ranorex.Core.Testing;
-using Atlassian.Jira;
 
 namespace JiraReporter {
     // <summary>
@@ -29,8 +30,11 @@ namespace JiraReporter {
             ITestContainer tc = checkTestCase();
             JiraConfiguration config = JiraConfiguration.Instance;
 
-            IEnumerable issues;
-            if (config.jqlQueryToConnectIssues.Length > 0) {
+            IEnumerable issues = null;
+            if ((config.jqlQueryToConnectIssues == null || config.jqlQueryToConnectIssues.Length == 0)
+                && (config.RxAutomationFieldName == null || config.RxAutomationFieldName.Length == 0)) {
+            	issues = Enumerable.Empty<Issue>();
+            } else if (config.jqlQueryToConnectIssues.Length > 0) {
             	issues = JiraReporter.getJiraIssues(config.jqlQueryToConnectIssues);
             } else {
             		issues = JiraReporter.getJiraIssues("'" + config.RxAutomationFieldName + "' ~ '" + tc.Name + "'");

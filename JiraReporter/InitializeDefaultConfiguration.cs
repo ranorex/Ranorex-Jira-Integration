@@ -106,6 +106,14 @@ namespace JiraReporter
             set { _jiraIssuePriority = value; }
         }
         
+        string _jiraEnvironment = "";
+        [TestVariable("DF32F91E-A96C-40EA-B3E8-2E2154BF1012")]
+        public string jiraEnvironment
+        {
+            get { return _jiraEnvironment; }
+            set { _jiraEnvironment = value; }
+        }
+        
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
@@ -156,7 +164,7 @@ namespace JiraReporter
             	config.StateReopen = this.StateReopen;
             }
             
-            if (this.RxAutomationFieldName != null) {
+            if (this.RxAutomationFieldName != null && !this.RxAutomationFieldName.Equals("")) {
             	config.RxAutomationFieldName = this.RxAutomationFieldName;
             }
             
