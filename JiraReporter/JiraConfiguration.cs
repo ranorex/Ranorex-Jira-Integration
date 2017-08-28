@@ -30,6 +30,9 @@ namespace JiraReporter
         public string JiraIssuePriority { get; set; }
         public string JiraEnvironment { get; set; }
         public Dictionary<string, string> customFields = new Dictionary<string, string>();
+        public string ServerUrl { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
 
 		private JiraConfiguration()
 		{

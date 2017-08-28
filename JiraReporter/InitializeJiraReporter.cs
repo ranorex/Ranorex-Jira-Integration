@@ -62,6 +62,11 @@ namespace JiraReporter
         {
           try
           {
+          	JiraConfiguration config = JiraConfiguration.Instance;
+	        config.ServerUrl = _JiraServerURL;
+	        config.Password = _JiraPassword;
+	        config.UserName = _JiraUserName;
+          	
             JiraReporter.ConnectJiraServer(_JiraUserName, _JiraPassword, _JiraServerURL);
             //Report.Info(JiraReporter.GetServerTitle() + " -- " + JiraReporter.GetServerVersion());
           }
