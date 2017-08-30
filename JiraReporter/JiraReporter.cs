@@ -68,8 +68,14 @@ namespace JiraReporter
             Issue issue = client.CreateIssue(config.JiraProjectKey);
             issue.Type = config.JiraIssueType;
             
-            updatePriority(issue, config.JiraIssuePriority);
-            updateEnvironment(issue, config.JiraEnvironment);
+            if (config.JiraIssuePriority != null && config.JiraIssuePriority.Length > 0) {
+            	updatePriority(issue, config.JiraIssuePriority);
+            }
+            
+            if (config.JiraEnvironment != null && config.JiraEnvironment.Length > 0) {
+            	updateEnvironment(issue, config.JiraEnvironment);
+            }
+
             issue.Summary = testCaseName + ": " + config.JiraSummary;
             
             if (config.RxAutomationFieldName != null && !config.customFields.ContainsKey(config.RxAutomationFieldName)) 

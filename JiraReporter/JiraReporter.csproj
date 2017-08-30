@@ -61,9 +61,7 @@
       <HintPath>..\..\Ranorex\RanorexStudio Projects\JiraIntegration_7.1.0.1_GIT\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ranorex.Core, Version=5.3.0.22324, Culture=neutral, PublicKeyToken=b798506b574ebc9a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
+    <Reference Include="Ranorex.Core" />
     <Reference Include="Ranorex.Plugin.Cef" />
     <Reference Include="Ranorex.Plugin.ChromeWeb" />
     <Reference Include="Ranorex.Plugin.Flex" />

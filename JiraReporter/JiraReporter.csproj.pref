@@ -1,11 +1,14 @@
 ﻿<Properties>
   <Array name="active">
-    <Element value="OnDemandCreateNewIssueIfTestCaseFails.cs" />
+    <Element value="JiraReporter.cs" />
   </Array>
   <Array name="bookmarks">
-    <Element value="Breakpoint|C:\Users\sknopper\Documents\Ranorex-Jira-Integration\JiraReporter\OnDemandCreateNewIssueIfTestCaseFails.cs|146|15|True|Break||" />
+    <Element value="Breakpoint|C:\Users\sknopper\Documents\Ranorex-Jira-Integration\JiraReporter\OnDemandCreateNewIssueIfTestCaseFails.cs|155|15|True|Break||" />
   </Array>
   <Array name="files">
+    <Element value="JiraConfiguration.cs" />
+    <Element value="JiraReporter.cs" />
+    <Element value="AbstractJiraIntegrationClient.cs" />
     <Element value="OnDemandCreateNewIssueIfTestCaseFails.cs" />
     <Element value="InitializeDefaultConfiguration.cs" />
     <Element value="AutoHandleJiraIntegration.cs" />
