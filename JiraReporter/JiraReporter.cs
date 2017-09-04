@@ -50,9 +50,10 @@ namespace JiraReporter
   {
     static JiraReporter() { }
     
-    public static void ConnectJiraServer(string user, string password, string serverURL)
+    public static void ConnectJiraServer()
     {
-      client = Jira.CreateRestClient(serverURL, user, password);
+            JiraConfiguration config = JiraConfiguration.Instance;
+      client = Jira.CreateRestClient(config.ServerUrl, config.UserName, config.Password);
     }
 
     public static JiraIssue CreateIssue(string testCaseName, bool attachReport)
@@ -152,7 +153,7 @@ namespace JiraReporter
     	}
     }
     
-    private static string updateDescription(Issue issue, JiraConfiguration config)
+    public static string updateDescription(Issue issue, JiraConfiguration config)
     {
     	string descriptionString = "";
 
@@ -246,14 +247,18 @@ namespace JiraReporter
             return new JiraIssue(issue.Key.ToString(), issue.JiraIdentifier);
     }
 
+    public static void addRanorexReport(Issue issue, string fileName)
+        {
+            Ranorex.Core.Reporting.TestReport.SaveReport();
+            Ranorex.Report.Zip(Ranorex.Core.Reporting.TestReport.ReportEnvironment, null, fileName);
+            fileName = fileName.Replace(".rxlog", ".rxzlog");
+
+            issue.AddAttachment(fileName);
+        }
+
     private static void addRanorexReport(Issue issue)
     {
-      string fileName = Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportViewFilePath;
-      Ranorex.Core.Reporting.TestReport.SaveReport();
-      Ranorex.Report.Zip(Ranorex.Core.Reporting.TestReport.ReportEnvironment, null, fileName);
-      fileName = fileName.Replace(".rxlog", ".rxzlog");
-
-      issue.AddAttachment(fileName);
+            addRanorexReport(issue, Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportViewFilePath);
     }
 
     public static void CheckIfClientConnected()

@@ -14,6 +14,8 @@ using Ranorex;
 using Ranorex.Core.Testing;
 
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace JiraReporter
 {
@@ -46,43 +48,44 @@ namespace JiraReporter
           get { return _JiraBatchFileFolderLocation; }
           set { _JiraBatchFileFolderLocation = value; }
         }
-        
+
         //-----------------------------------------------------------------------------------------
+        private string attachments = "";
         
         void writeBatchFile(string batFileName, string reportFileName, string testcaseName)
         {
-        	JiraConfiguration config = JiraConfiguration.Instance;
+            ITestContainer tc = TestSuite.CurrentTestContainer;
+            JiraConfiguration config = JiraConfiguration.Instance;
         	
             var file = File.CreateText(batFileName);
+            
+            string chageDirectory = String.Format("CD \"{0}\"", JiraCLIFileLocation.Substring(0, JiraCLIFileLocation.LastIndexOf('\\') +1));
             // Jira WebService calls for CLI environment
-            string jiraCall = String.Format("CALL java -jar \"{0}\" --server {1} --user {2} --password {3} ", 
-                                            JiraCLIFileLocation, config.ServerUrl, config.UserName, config.Password);
+            string jiraCall = String.Format("CALL \"{0}\" {1} {2} {3} {4} ", 
+                                            JiraCLIFileLocation.Substring(JiraCLIFileLocation.LastIndexOf('\\') +1), config.ServerUrl, config.UserName, config.Password, tc.Name);
 
-            string actionCreateIssue = String.Format("--action createIssue --project {0} --type \"1\" --summary \"{2}\" --description \"{3}\" ",
-                                                     config.JiraProjectKey, config.JiraIssueType, config.JiraSummary, config.JiraDescription);
+            string actionCreateIssue = String.Format("{0} \"{1}\" \"{2}\" \"{3}\" ",
+                                                     config.JiraProjectKey, config.JiraIssueType, config.JiraSummary, getDescriptionString(config));
             
             
             if(!string.IsNullOrEmpty(config.JiraLabels))
             {
-              char delimiterChar = ';';
-              var labels = config.JiraLabels.Replace(delimiterChar, ' ');
-              actionCreateIssue = actionCreateIssue + String.Format(" --labels \"{0}\" ", labels);
+              actionCreateIssue = actionCreateIssue + String.Format(" \"{0}\" ", config.JiraLabels);
             }
-            
-            
-            string actionAddAttachment = String.Format("--action addAttachment --issue %KEY% --file \"{0}\" ", 
+
+            actionCreateIssue += String.Format("\"{0}\" ", 
                                                        System.IO.Path.Combine(Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportFileDirectory, reportFileName));
-            
+
+            actionCreateIssue += String.Format("\"{0}\" ", attachments);
+
             file.WriteLine("@ECHO off");
-            file.WriteLine("echo Important: 'Accept remote API calls' must be enabled on the Jira server!");
-            
+            file.WriteLine(chageDirectory);
             file.WriteLine( String.Format("{0} {1} %* > return_string_{2}.txt", jiraCall, actionCreateIssue, testcaseName));
             file.WriteLine(String.Format("type return_string_{0}.txt", testcaseName));
             
             //parse return string from Jira WebService call to get issue ID
             file.WriteLine(String.Format("FOR /F \"tokens=2,6,8 delims== \" %%I IN (return_string_{0}.txt) DO ( set KEY=%%I & set ID=%%J & set URL=%%K)", testcaseName));
             file.WriteLine("set ID=%ID:~0,-1%");
-            file.WriteLine( jiraCall + actionAddAttachment+" %*");
             
             //prompt if user wants to review the created issue in the default browser
             file.WriteLine("if %errorlevel% neq 0 echo ERROR: Something went wrong uploading the issue! & pause");
@@ -96,6 +99,28 @@ namespace JiraReporter
             
             file.Close();
             file.Dispose();
+        }
+
+        string getDescriptionString(JiraConfiguration config)
+        {
+            string descriptionString = "";
+
+            foreach (JiraDescriptionItem item in config.JiraDescription)
+            {
+                descriptionString += "{LB} " + item.text;
+
+                if (item.isImageEntry())
+                {
+                    if (attachments.Length > 0)
+                    {
+                        attachments += ";";
+                    }
+                    attachments += System.IO.Path.Combine(Ranorex.Core.Reporting.TestReport.ReportEnvironment.ReportFileDirectory, item.getValue());
+                    descriptionString += "{LB} !" + Path.GetFileName(item.getValue()) + "!";
+                }
+            }
+
+            return descriptionString;
         }
         
         //-----------------------------------------------------------------------------------------
@@ -158,7 +183,7 @@ namespace JiraReporter
               // create link to trigger the batch file
               // NOTE: link is only working if the original batch file location is still valid!
               JiraConfiguration config = JiraConfiguration.Instance;
-              Report.LogHtml(ReportLevel.Info, String.Format("Jira issue ready for creation : <a href=\"file:///{0}\" > Create Issue </a>", batfileLocation));
+              Report.LogHtml(ReportLevel.Info, String.Format("Jira issue ready for creation : <a href=\"file:///{0}\\{1}\" > Create Issue </a>", batfileLocation, batFileName));
               Report.Info(String.Format("Used BatchFile: {0};  Original location: {1}", batFileName, batfileLocation));
               Report.LogHtml(ReportLevel.Info, String.Format("Link to Jira project: <a href=\"{0}/browse/{1} \"> {1} </a>", 
                                                              JiraReporter.ServerURL, config.JiraProjectKey));

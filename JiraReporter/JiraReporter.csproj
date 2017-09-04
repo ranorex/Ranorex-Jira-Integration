@@ -117,9 +117,6 @@
     <Compile Include="AutoCreateNewIssueIfTestCaseFails.cs">
       <id>7cb8e35a-2381-4eca-aba8-f374383337b7</id>
     </Compile>
-    <Compile Include="InitializeJiraReporter.cs">
-      <id>98334ced-9d62-43ff-9a23-223e5ff57ef9</id>
-    </Compile>
     <Compile Include="JiraReporter.cs">
       <id>ee995c2d-ea43-4af3-9e7b-a52cdb78c1fa</id>
     </Compile>
@@ -144,10 +141,21 @@
     <None Include="packages.config">
       <id>3f70ae2d-1ac8-4ab2-8196-b1f0d995cc4c</id>
     </None>
+    <None Include="RanorexJiraCli.exe">
+      <id>3469f02b-a87c-46c7-9290-f3f98bfdb956</id>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Ranorex_JiraIntegration.nuspec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
       <id>bca8315c-1188-47f0-ac5b-8e43d40767c1</id>
+    </None>
+    <None Include="Ranorex_JiraIntegration.props">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ranorex_JiraIntegration.targets">
+      <id>734c3afa-503c-4afb-a842-4b62bdbf53c7</id>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(RanorexTargetsPath)" Condition="Exists('$(RanorexTargetsPath)')" />

@@ -3,7 +3,7 @@
   <metadata>
     <id>Ranorex_JiraIntegration</id>
     <title>Ranorex Jira Reporter</title>
-    <version>7.1.1.1</version>
+    <version>7.1.1.2</version>
     <authors>Ranorex GmbH</authors>
     <owners>Ranorex GmbH</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -21,6 +21,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="$configuration$\Ranorex_JiraIntegration.dll" target="lib" />
+    <file src="$configuration$\Ranorex_JiraIntegration.dll" target="lib\net452" />
+	<file src="$configuration$\RanorexJiraCli.exe" target="content" />
+	<file src="$configuration$\Ranorex_JiraIntegration.targets" target="build" />
+	<file src="$configuration$\Ranorex_JiraIntegration.props" target="build" />
   </files>
 </package>

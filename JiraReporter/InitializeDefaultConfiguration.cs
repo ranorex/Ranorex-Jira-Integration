@@ -114,6 +114,30 @@ namespace JiraReporter
             set { _jiraEnvironment = value; }
         }
         
+        string _JiraUserName = "";
+        [TestVariable("87147480-A368-4C8D-935A-AC9928641B17")]
+        public string JiraUserName
+        {
+          get { return _JiraUserName; }
+          set { _JiraUserName = value; }
+        }
+        
+        string _JiraServerURL = "";
+        [TestVariable("2D58EEE0-06DE-4D7E-9C04-DCA5CD7A1A91")]
+        public string JiraServerURL
+        {
+          get { return _JiraServerURL; }
+          set { _JiraServerURL = value; }
+        }
+        
+        string _JiraPassword = "";
+        [TestVariable("D4637164-3891-47A1-A96E-77396F53F387")]
+        public string JiraPassword
+        {
+          get { return _JiraPassword; }
+          set { _JiraPassword = value; }
+        }
+        
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
@@ -175,6 +199,35 @@ namespace JiraReporter
             if (this.jiraIssuePriority != null) {
             	config.JiraIssuePriority = jiraIssuePriority;
             }
+            
+            initialConnect();
+        }
+        
+        private void initialConnect() 
+        {
+        	try
+          {
+        	JiraConfiguration config = JiraConfiguration.Instance;
+	        config.ServerUrl = _JiraServerURL;
+	        config.Password = _JiraPassword;
+	        config.UserName = _JiraUserName;
+          	
+            JiraReporter.ConnectJiraServer();
+            //Report.Info(JiraReporter.GetServerTitle() + " -- " + JiraReporter.GetServerVersion());
+          }
+          catch(Exception e)
+          {
+              var inner = e.InnerException;
+              string str = "";
+              if(inner != null)
+              {
+                var prop = inner.GetType().GetProperty("ErrorResponse");
+                if(prop != null)
+                  str = (string)prop.GetValue(e.InnerException, null);
+              }
+
+              Report.Error(e.Message + " (InnerException: " + e.InnerException + " -- " + str + ")"); 
+          }
         }
     }
 }
