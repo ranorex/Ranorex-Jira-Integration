@@ -62,6 +62,34 @@ namespace JiraReporter
     	/// within a User Code collection.
     	/// </summary>
     	[UserCodeMethod]
+    	public static void addCustomCascadingField(string fieldName, string parentValue, string childValue)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+			removeCustomFieldValue(fieldName);
+			string[] values = {parentValue, childValue};
+			config.customCascadingFields.Add(fieldName, values);
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void removeCustomCascadingFieldValue(string fieldName)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		if (config.customCascadingFields.ContainsKey(fieldName)) {
+				config.customCascadingFields.Remove(fieldName);
+			} 
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
     	public static string getCurrentSprintId()
     	{
     		return JiraReporter.getCurrentSprintItem("id");
@@ -102,6 +130,106 @@ namespace JiraReporter
     	{
     		JiraConfiguration config = JiraConfiguration.Instance;
     		config.JiraEnvironment = environment;
+    	}
+    	
+    	[UserCodeMethod]
+    	public static void setAssignee(string assignee)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.Assignee = assignee;
+    	}
+    	
+    	[UserCodeMethod]
+    	public static void setDueDate(string dueDate)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.DueDate = dueDate;
+    	}
+    	
+		[UserCodeMethod]
+    	public static void setFixVersions(string versions)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.FixVersions = versions;
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void addFixVersions(string version)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.FixVersions += ";" + version;
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void removeFixVersions(string version)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		string oldVersions = config.FixVersions;
+    		string[] versions = oldVersions.Split(';');
+    		string newVersions = "";
+    		foreach (string ver in versions) {
+    			if (! newVersions.Equals("")) {
+    				newVersions += ";";
+    			}
+    			if (!ver.Equals(version)) {
+    				newVersions += ver;
+    			}
+    		}
+    		
+    		JiraFieldHelper.setFixVersions(newVersions);
+    	}
+		
+    	[UserCodeMethod]
+    	public static void setAffectsVersions(string versions)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.AffectsVersions = versions;
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void addAffectsVersions(string version)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		config.AffectsVersions += ";" + version;
+    	}
+    	
+    	/// <summary>
+    	/// This is a placeholder text. Please describe the purpose of the
+    	/// user code method here. The method is published to the User Code library
+    	/// within a User Code collection.
+    	/// </summary>
+    	[UserCodeMethod]
+    	public static void removeAffectsVersions(string version)
+    	{
+    		JiraConfiguration config = JiraConfiguration.Instance;
+    		string oldVersions = config.AffectsVersions;
+    		string[] versions = oldVersions.Split(';');
+    		string newVersions = "";
+    		foreach (string ver in versions) {
+    			if (! newVersions.Equals("")) {
+    				newVersions += ";";
+    			}
+    			if (!ver.Equals(version)) {
+    				newVersions += ver;
+    			}
+    		}
+    		
+    		JiraFieldHelper.setAffectsVersions(newVersions);
     	}
     	
     	/// <summary>

@@ -152,6 +152,7 @@
     </None>
     <None Include="Ranorex_JiraIntegration.props">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <id>11bc6a7c-fc62-438c-8898-54989b4d44ce</id>
     </None>
     <None Include="Ranorex_JiraIntegration.targets">
       <id>734c3afa-503c-4afb-a842-4b62bdbf53c7</id>

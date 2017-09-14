@@ -69,26 +69,98 @@ namespace JiraReporter
             Issue issue = client.CreateIssue(config.JiraProjectKey);
             issue.Type = config.JiraIssueType;
             
-            if (config.JiraIssuePriority != null && config.JiraIssuePriority.Length > 0) {
-            	updatePriority(issue, config.JiraIssuePriority);
-            }
+            updateStandardFields(issue, testCaseName);
             
-            if (config.JiraEnvironment != null && config.JiraEnvironment.Length > 0) {
-            	updateEnvironment(issue, config.JiraEnvironment);
+            addCustomFields(issue, testCaseName);
+            
+            addCustomCascadingFields(issue);
+            
+            issue.SaveChanges();
+            
+            string newDesc = updateDescription(issue, config);
+            if (newDesc.Length > 0)
+            {
+            	issue.Description = newDesc;
             }
 
-            issue.Summary = testCaseName + ": " + config.JiraSummary;
+            if (attachReport)
+            {
+                addRanorexReport(issue);
+            }
             
-            if (config.RxAutomationFieldName != null && !config.customFields.ContainsKey(config.RxAutomationFieldName)) 
+            issue.SaveChanges();
+
+            var jiraIssue = new JiraIssue(issue.Key.ToString(), issue.JiraIdentifier);
+
+            return (jiraIssue);
+    }
+    
+    private static void updateStandardFields(Issue issue, string testCaseName)
+    {
+    	JiraConfiguration config = JiraConfiguration.Instance;
+    	
+    	if (config.JiraIssuePriority != null && config.JiraIssuePriority.Length > 0) 
+    	{
+            updatePriority(issue, config.JiraIssuePriority);
+        }
+            
+        if (config.JiraEnvironment != null && config.JiraEnvironment.Length > 0) 
+        {
+            updateEnvironment(issue, config.JiraEnvironment);
+        }
+            
+        issue.Description = " ";
+
+        issue.Summary = testCaseName + ": " + config.JiraSummary;
+            
+        foreach (string label in config.getAllLabels()) 
+        {
+            issue.Labels.Add(label);
+        }
+         
+        if (config.AffectsVersions != null && config.AffectsVersions.Length > 0) 
+        {
+        	string[] versions = config.AffectsVersions.Split(';');
+        	issue.AffectsVersions.Clear();
+        	
+        	foreach (string version in versions)
+        	{
+        		issue.AffectsVersions.Add(version);
+        	}
+        }
+		 
+		if (config.Assignee != null && config.Assignee.Length > 0) 
+        {
+            issue.Assignee = config.Assignee;
+        }
+		
+		if (config.DueDate != null && config.DueDate.Length > 0) 
+        {
+			issue.DueDate = DateTime.Parse(config.DueDate);
+        }
+		
+		if (config.FixVersions != null && config.FixVersions.Length > 0) 
+        {
+            string[] versions = config.FixVersions.Split(';');
+        	issue.FixVersions.Clear();
+        	
+        	foreach (string version in versions)
+        	{
+        		issue.FixVersions.Add(version);
+        	}
+        }
+    }
+    
+    private static void addCustomFields(Issue issue, string testCaseName)
+    {
+    	JiraConfiguration config = JiraConfiguration.Instance;
+    	
+    	if (config.RxAutomationFieldName != null && !config.customFields.ContainsKey(config.RxAutomationFieldName)) 
             {
             	config.customFields.Add(config.RxAutomationFieldName, testCaseName);
             }
-            
-            foreach (string label in config.getAllLabels()) {
-                issue.Labels.Add(label);
-            }
-
-            foreach (string key in config.customFields.Keys)
+    	
+    	foreach (string key in config.customFields.Keys)
             {
                 string value = null;
                 config.customFields.TryGetValue(key, out value);
@@ -98,23 +170,29 @@ namespace JiraReporter
                 	Ranorex.Report.Log(Ranorex.ReportLevel.Warn, "An invalid custom field is configured for jira. field name: '" + key + "' field value: '" + value + "'");
                 } else 
                 {
-                	issue.CustomFields.Add(key, value);
+                	    issue.CustomFields.Add(key, value);
                 }
             }
-            
-            issue.SaveChanges();
-
-            if (attachReport)
+    }
+    
+    private static void addCustomCascadingFields(Issue issue)
+    {
+    	JiraConfiguration config = JiraConfiguration.Instance;
+    	
+    	foreach (string key in config.customCascadingFields.Keys)
             {
-                addRanorexReport(issue);
+    		string[] value = null;
+                config.customCascadingFields.TryGetValue(key, out value);
+                
+                if(key.Equals(""))
+                {
+                	Ranorex.Report.Log(Ranorex.ReportLevel.Warn, "An invalid custom field is configured for jira. field name: '" + key + "' field value: '" + value + "'");
+                } else 
+                {
+       			 	CascadingSelectCustomField field = new CascadingSelectCustomField(key, value[0], value[1]);
+        			issue.CustomFields.AddCascadingSelectField(field);
+                }
             }
-            
-            issue.Description = updateDescription(issue, config);
-            issue.SaveChanges();
-
-            var jiraIssue = new JiraIssue(issue.Key.ToString(), issue.JiraIdentifier);
-
-            return (jiraIssue);
     }
     
     private static void updateEnvironment(Issue issue, string envString)
