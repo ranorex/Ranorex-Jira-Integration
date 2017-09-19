@@ -109,7 +109,7 @@ namespace JiraReporter
             updateEnvironment(issue, config.JiraEnvironment);
         }
             
-        issue.Description = " ";
+        issue.Description = ".";
 
         issue.Summary = testCaseName + ": " + config.JiraSummary;
             
