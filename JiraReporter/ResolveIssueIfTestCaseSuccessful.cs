@@ -10,15 +10,8 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Drawing;
-using System.Threading;
-using WinForms = System.Windows.Forms;
 
 using Ranorex;
-using Ranorex.Core;
 using Ranorex.Core.Testing;
 
 namespace JiraReporter
@@ -27,8 +20,22 @@ namespace JiraReporter
     /// Description of CloseIssueIfTestCaseSuccessful.
     /// </summary>
     [TestModule("B01C5C25-EC0B-48D9-AE60-EDF4904F289D", ModuleType.UserCode, 1)]
-    public class ResolveIssueIfTestCaseSuccessful : ITestModule
+    public class ResolveIssueIfTestCaseSuccessful : AbstractJiraIntegrationClient, ITestModule
     {
+        string _JiraIssueKey = "";
+        [TestVariable("763880E1-C9E1-4CCE-B626-898390004888")]
+        public string JiraIssueKey
+        {
+            get { return _JiraIssueKey; }
+            set { _JiraIssueKey = value; }
+        }
+        string _TransitionName = "";
+        [TestVariable("C4F14A65-DB66-4381-BABD-921E14077BE6")]
+        public string TransitionName
+        {
+            get { return _TransitionName; }
+            set { _TransitionName = value; }
+        }
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
@@ -37,58 +44,21 @@ namespace JiraReporter
             // Do not delete - a parameterless constructor is required!
         }
 
-        string _JiraIssueKey = "";
-        [TestVariable("763880E1-C9E1-4CCE-B626-898390004888")]
-        public string JiraIssueKey
-        {
-          get { return _JiraIssueKey; }
-          set { _JiraIssueKey = value; }
-        }
-        
         /// <summary>
         /// Performs the playback of actions in this module.
         /// </summary>
         /// <remarks>You should not call this method directly, instead pass the module
         /// instance to the <see cref="TestModuleRunner.Run(ITestModule)"/> method
         /// that will in turn invoke this method.</remarks>
-        void ITestModule.Run()
+        public void Run()
         {
-          var tc = TestCase.Current;
-
-          if (tc == null)
-          {
-            Report.Error("TestCase is 'null'; this usually happens when the module is used outside of testcases (e.g., global teardown).");
-          }
+            var tc = checkTestCase();
 
           if(tc.Status == Ranorex.Core.Reporting.ActivityStatus.Success)
           {
-            try
-            {
-              var curIssue = JiraReporter.ResolveIssue(JiraIssueKey, true);
-
-              if (curIssue != null)
-              {
-                Report.Info("Jira issue resolved -- IssueKey: " + curIssue.Key + "; IssueID: " + curIssue.Id);
-                Report.LogHtml(ReportLevel.Info, "<a href=\"" + JiraReporter.ServerURL + "/browse/" + curIssue.Key + "\">" + curIssue.Key + "</a>");
-              }
-              else
-                Report.Warn("Could not resolved Jira issue -- IssueKey: " + curIssue.Key);
-            }
-            catch(Exception e)
-            {
-              var inner = e.InnerException;
-              string str = "";
-              if(inner != null)
-              {
-                var prop = inner.GetType().GetProperty("ErrorResponse");
-                if(prop != null)
-                  str = (string)prop.GetValue(e.InnerException, null);
-              }
-
-              Report.Error(e.Message + " (InnerException: " + e.InnerException + " -- " + str + ")");
-            }
+                
+                resolveIssue(JiraIssueKey, TransitionName);
           }
-          
         }
     }
 }

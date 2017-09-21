@@ -1,20 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{FC2065F9-928F-4E6F-8AB6-948179CA1DA6}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>JiraReporter</RootNamespace>
-    <AssemblyName>JiraReporter</AssemblyName>
-    <RanorexVersion>5</RanorexVersion>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <AssemblyName>Ranorex_JiraIntegration</AssemblyName>
+    <RanorexVersion>7.1</RanorexVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <projectdefaultrepository>6DAA0E69-EBD0-40DF-B6D1-8546891CC1DE</projectdefaultrepository>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <TargetFrameworkProfile />
+    <RanorexTargetsPath>$(MSBuildExtensionsPath)\Ranorex$(RanorexVersion)\Ranorex.MSBuild.Targets</RanorexTargetsPath>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <RunCodeAnalysis>False</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -23,6 +30,8 @@
     <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <StartAction>Project</StartAction>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -33,31 +42,71 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <RegisterForComInterop>False</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <BaseAddress>4194304</BaseAddress>
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="Ranorex.Core, Version=5.3.0.22324, Culture=neutral, PublicKeyToken=b798506b574ebc9a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Atlassian.Jira, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Ranorex\RanorexStudio Projects\JiraIntegration_7.1.0.1_GIT\packages\Atlassian.SDK.9.3.1\lib\Atlassian.Jira.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\JiraRestClient-master\JiraRestClient\TechTalk.JiraRestClient\bin\Debug\RestSharp.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\..\Ranorex\RanorexStudio Projects\JiraIntegration_7.1.0.1_GIT\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ranorex.Core" />
+    <Reference Include="Ranorex.Plugin.Cef" />
+    <Reference Include="Ranorex.Plugin.ChromeWeb" />
+    <Reference Include="Ranorex.Plugin.Flex" />
+    <Reference Include="Ranorex.Plugin.Java" />
+    <Reference Include="Ranorex.Plugin.Mobile" />
+    <Reference Include="Ranorex.Plugin.MozillaWeb" />
+    <Reference Include="Ranorex.Plugin.Msaa" />
+    <Reference Include="Ranorex.Plugin.Office" />
+    <Reference Include="Ranorex.Plugin.Qt" />
+    <Reference Include="Ranorex.Plugin.RawText" />
+    <Reference Include="Ranorex.Plugin.Sap" />
+    <Reference Include="Ranorex.Plugin.Uia" />
+    <Reference Include="Ranorex.Plugin.Web" />
+    <Reference Include="Ranorex.Plugin.WebDriver" />
+    <Reference Include="Ranorex.Plugin.Win32" />
+    <Reference Include="Ranorex.Plugin.WinForms" />
+    <Reference Include="Ranorex.Plugin.Wpf" />
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Ranorex\RanorexStudio Projects\JiraIntegration_7.1.0.1_GIT\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="TechTalk.JiraRestClient, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\JiraRestClient-master\JiraRestClient\TechTalk.JiraRestClient\bin\Debug\TechTalk.JiraRestClient.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractJiraIntegrationClient.cs">
+      <id>fd0630fe-7957-4161-aa44-8a16401cb4c2</id>
+    </Compile>
     <Compile Include="AssemblyInfo.cs">
       <id>c8ef42d5-593c-46ec-91c3-cc168bbf7baf</id>
+    </Compile>
+    <Compile Include="AutoHandleJiraIntegration.cs">
+      <id>455ded0c-2e1d-46a0-8978-0a0c420443c8</id>
+    </Compile>
+    <Compile Include="InitializeDefaultConfiguration.cs">
+      <id>82cd324f-c5b3-401c-8c2f-872620fb361c</id>
+    </Compile>
+    <Compile Include="JiraConfiguration.cs">
+      <id>490ec2bc-21ab-4605-8183-93a5c4bc85bf</id>
+    </Compile>
+    <Compile Include="JiraDescriptionItem.cs">
+      <id>23c3141a-b2d8-446f-8460-d3e6a9460935</id>
+    </Compile>
+    <Compile Include="JiraFieldHelper.cs">
+      <id>d05eb9e1-840f-4375-8ef5-403809e4e7bb</id>
     </Compile>
     <Compile Include="OnDemandCreateNewIssueIfTestCaseFails.cs">
       <id>2a78d451-9400-4c34-bab9-a3e5c5f159ef</id>
@@ -68,9 +117,6 @@
     <Compile Include="AutoCreateNewIssueIfTestCaseFails.cs">
       <id>7cb8e35a-2381-4eca-aba8-f374383337b7</id>
     </Compile>
-    <Compile Include="InitializeJiraReporter.cs">
-      <id>98334ced-9d62-43ff-9a23-223e5ff57ef9</id>
-    </Compile>
     <Compile Include="JiraReporter.cs">
       <id>ee995c2d-ea43-4af3-9e7b-a52cdb78c1fa</id>
     </Compile>
@@ -80,10 +126,38 @@
     <Compile Include="UpdateExistingIssueIfTestCaseFails.cs">
       <id>57e4defc-e6a8-4c43-abf4-d7a69a549777</id>
     </Compile>
+    <Compile Include="ValueExtractorHelper.cs">
+      <id>17309da9-e8fd-4b0a-ac5c-871cd0d16497</id>
+    </Compile>
     <Content Include="JiraReporter.rxtmg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <id>db9e69b7-4b9a-4fae-a5f8-74e622d43737</id>
     </Content>
   </ItemGroup>
-  <Import Condition="Exists('$(MSBuildExtensionsPath)\Ranorex$(RanorexVersion)\Ranorex.MSBuild.Targets')" Project="$(MSBuildExtensionsPath)\Ranorex$(RanorexVersion)\Ranorex.MSBuild.Targets" />
+  <ItemGroup>
+    <None Include="app.config">
+      <id>eed2ee5d-2ad8-4bbc-91f0-03c3e225641d</id>
+    </None>
+    <None Include="packages.config">
+      <id>3f70ae2d-1ac8-4ab2-8196-b1f0d995cc4c</id>
+    </None>
+    <None Include="RanorexJiraCli.exe">
+      <id>3469f02b-a87c-46c7-9290-f3f98bfdb956</id>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ranorex_JiraIntegration.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <id>bca8315c-1188-47f0-ac5b-8e43d40767c1</id>
+    </None>
+    <None Include="Ranorex_JiraIntegration.props">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <id>11bc6a7c-fc62-438c-8898-54989b4d44ce</id>
+    </None>
+    <None Include="Ranorex_JiraIntegration.targets">
+      <id>734c3afa-503c-4afb-a842-4b62bdbf53c7</id>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(RanorexTargetsPath)" Condition="Exists('$(RanorexTargetsPath)')" />
 </Project>
