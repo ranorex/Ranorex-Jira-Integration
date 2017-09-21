@@ -1,0 +1,27 @@
+﻿<Properties>
+  <Array name="active">
+    <Element value="JiraReporter.cs" />
+  </Array>
+  <Array name="bookmarks">
+    <Element value="Breakpoint|C:\Users\sknopper\Documents\Ranorex-Jira-Integration\JiraReporter\OnDemandCreateNewIssueIfTestCaseFails.cs|123|13|True|Break||" />
+    <Element value="Breakpoint|C:\Users\sknopper\Documents\Ranorex-Jira-Integration\JiraReporter\JiraReporter.cs|61|13|True|Break||" />
+  </Array>
+  <Array name="files">
+    <Element value="AbstractJiraIntegrationClient.cs" />
+    <Element value="JiraReporter.cs" />
+    <Element value="ValueExtractorHelper.cs" />
+    <Element value="JiraFieldHelper.cs" />
+    <Element value="AutoHandleJiraIntegration.cs" />
+    <Element value="OnDemandCreateNewIssueIfTestCaseFails.cs" />
+    <Element value="UpdateExistingIssueIfTestCaseFails.cs" />
+    <Element value="ResolveIssueIfTestCaseSuccessful.cs" />
+    <Element value="ReOpenExistingIssueIfTestCaseFails.cs" />
+    <Element value="InitializeDefaultConfiguration.cs" />
+    <Element value="JiraDescriptionItem.cs" />
+  </Array>
+  <Properties name="projectSavedData">
+    <Properties name="customTool">
+      <runOnBuild value="False" />
+    </Properties>
+  </Properties>
+</Properties>

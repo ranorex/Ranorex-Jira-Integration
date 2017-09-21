@@ -10,14 +10,8 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Drawing;
-using System.Threading;
-using WinForms = System.Windows.Forms;
 
 using Ranorex;
-using Ranorex.Core;
 using Ranorex.Core.Testing;
 
 namespace JiraReporter
@@ -76,7 +70,7 @@ namespace JiraReporter
         /// that will in turn invoke this method.</remarks>
         void ITestModule.Run()
         {
-          var tc = TestCase.Current;
+          var tc = TestSuite.CurrentTestContainer;
 
           if (tc == null)
           {
@@ -96,7 +90,7 @@ namespace JiraReporter
               var curIssue = JiraReporter.UpdateIssue(JiraIssueKey, tc.Name, JiraSummary, JiraDescription, labels, true);
 
               Report.Info("Jira issue updated -- IssueKey: " + curIssue.Key + "; IssueID: "+ curIssue.Id);
-              Report.LogHtml(ReportLevel.Info, "<a href=\""+ JiraReporter.ServerURL + "/browse/" + curIssue.Key +"\">" + curIssue.Key  +"</a>" );
+              Report.LogHtml(ReportLevel.Info, "<a href=\""+ JiraReporter.ServerURL + "/browse/" + curIssue.Id + "\">" + curIssue.Id + "</a>" );
             }
             catch(Exception e)
             {

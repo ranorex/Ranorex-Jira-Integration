@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Ranorex_JiraIntegration</id>
+    <title>Ranorex Jira Reporter</title>
+    <version>7.1.1.2</version>
+    <authors>Ranorex GmbH</authors>
+    <owners>Ranorex GmbH</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      Package that integrates Jira functionality into the Ranorex system.
+    </description>
+    <copyright>Copyright 2017</copyright>
+    <tags>Ranorex Jira</tags>
+    <language>en-US</language>
+    <!-- NuGet package dependency -->
+    <dependencies>
+      <dependency id="Atlassian.SDK" version="9.2.4" />
+	  <dependency id="Newtonsoft.Json" version="8.0.3" />
+	  <dependency id="RestSharp" version="105.2.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="$configuration$\Ranorex_JiraIntegration.dll" target="lib\net452" />
+	<file src="$configuration$\RanorexJiraCli.exe" target="content" />
+	<file src="$configuration$\Ranorex_JiraIntegration.targets" target="build" />
+	<file src="$configuration$\Ranorex_JiraIntegration.props" target="build" />
+  </files>
+</package>
