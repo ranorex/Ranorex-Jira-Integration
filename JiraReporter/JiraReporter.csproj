@@ -64,10 +64,10 @@
     <Reference Include="Ranorex.Core" />
     <Reference Include="Ranorex.Plugin.Cef" />
     <Reference Include="Ranorex.Plugin.ChromeWeb" />
+    <Reference Include="Ranorex.Plugin.FirefoxWeb" />
     <Reference Include="Ranorex.Plugin.Flex" />
     <Reference Include="Ranorex.Plugin.Java" />
     <Reference Include="Ranorex.Plugin.Mobile" />
-    <Reference Include="Ranorex.Plugin.MozillaWeb" />
     <Reference Include="Ranorex.Plugin.Msaa" />
     <Reference Include="Ranorex.Plugin.Office" />
     <Reference Include="Ranorex.Plugin.Qt" />
