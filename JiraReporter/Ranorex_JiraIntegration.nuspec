@@ -21,7 +21,10 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="$configuration$\Ranorex_JiraIntegration.dll" target="lib\net452" />
+    <file src="$configuration$\Ranorex_JiraIntegration.dll" target="lib\net45" />
+	<file src="$configuration$\Ranorex_JiraIntegration.dll" target="lib\net452" />
+	<file src="$configuration$\Ranorex_JiraIntegration.dll" target="lib\net46" />
+	<file src="$configuration$\Ranorex_JiraIntegration.dll" target="lib\net47" />
 	<file src="$configuration$\RanorexJiraCli.exe" target="content" />
 	<file src="$configuration$\Ranorex_JiraIntegration.targets" target="build" />
 	<file src="$configuration$\Ranorex_JiraIntegration.props" target="build" />
