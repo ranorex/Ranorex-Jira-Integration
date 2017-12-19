@@ -1,5 +1,14 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
 <ItemGroup>
+<Content Include="lib/net452/Atlassian.Jira.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+<Content Include="lib/net452/Newtonsoft.Json.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+<Content Include="lib/net452/RestSharp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
 <Content Include="RanorexJiraCli.exe">
       <id>3469f02b-a87c-46c7-9290-f3f98bfdb956</id>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
