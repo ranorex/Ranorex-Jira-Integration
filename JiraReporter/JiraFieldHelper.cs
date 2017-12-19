@@ -65,7 +65,7 @@ namespace JiraReporter
     	public static void addCustomCascadingField(string fieldName, string parentValue, string childValue)
     	{
     		JiraConfiguration config = JiraConfiguration.Instance;
-			removeCustomFieldValue(fieldName);
+            removeCustomCascadingFieldValue(fieldName);
 			string[] values = {parentValue, childValue};
 			config.customCascadingFields.Add(fieldName, values);
     	}

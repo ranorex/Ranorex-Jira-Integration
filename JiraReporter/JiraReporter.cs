@@ -155,7 +155,7 @@ namespace JiraReporter
     {
     	JiraConfiguration config = JiraConfiguration.Instance;
     	
-    	if (config.RxAutomationFieldName != null && !config.customFields.ContainsKey(config.RxAutomationFieldName)) 
+    	if (config.RxAutomationFieldName != null && !config.RxAutomationFieldName.Equals("") && !config.customFields.ContainsKey(config.RxAutomationFieldName)) 
             {
             	config.customFields.Add(config.RxAutomationFieldName, testCaseName);
             }
