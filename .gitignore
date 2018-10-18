@@ -5,6 +5,9 @@
 *.suo
 *.user
 *.sln.docstates
+*.pref
+*.rxuser
+.vs/
 
 # Build results
 [Dd]ebug/
@@ -181,3 +184,6 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# Ranorex generated files
+*_VS2010.sln
