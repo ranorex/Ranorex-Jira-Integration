@@ -1,13 +1,4 @@
-﻿/*
- * Created by Ranorex
- * User: cbreit
- * Date: 23.10.2014
- * Time: 11:28
- * 
- * Acknowledgement:
- * This product includes software developed by TechTalk.
- * 
- */
+﻿
 using System;
 using System.Collections.Generic;
 
@@ -16,15 +7,11 @@ using Ranorex.Core.Testing;
 
 namespace JiraReporter
 {
-  /// <summary>
-  /// Description of UpdateExistingIssue.
-  /// </summary>
+
   [TestModule("7F4E25E4-174E-4E61-B291-EE7882426969", ModuleType.UserCode, 1)]
   public class UpdateExistingIssueIfTestCaseFails : ITestModule
   {
-    /// <summary>
-    /// Constructs a new instance.
-    /// </summary>
+
     public UpdateExistingIssueIfTestCaseFails()
     {
       // Do not delete - a parameterless constructor is required!
@@ -62,12 +49,7 @@ namespace JiraReporter
       set { _JiraLabels = value; }
     }
 
-    /// <summary>
-    /// Performs the playback of actions in this module.
-    /// </summary>
-    /// <remarks>You should not call this method directly, instead pass the module
-    /// instance to the <see cref="TestModuleRunner.Run(ITestModule)"/> method
-    /// that will in turn invoke this method.</remarks>
+
     void ITestModule.Run()
     {
       var tc = TestSuite.CurrentTestContainer;

@@ -21,17 +21,13 @@ namespace JiraReporter
       // Do not delete - a parameterless constructor is required!
     }
 
-    /// <summary>
-    /// Performs the playback of actions in this module.
-    /// </summary>
-    /// <remarks>You should not call this method directly, instead pass the module
-    /// instance to the <see cref="TestModuleRunner.Run(ITestModule)"/> method
-    /// that will in turn invoke this method.</remarks>
+
     public void Run()
     {
       ITestContainer tc = checkTestCase();
       JiraConfiguration config = JiraConfiguration.Instance;
 
+      //Try to get issues associated with the test case
       IEnumerable issues = null;
       if ((config.jqlQueryToConnectIssues == null || config.jqlQueryToConnectIssues.Length == 0)
           && (config.RxAutomationFieldName == null || config.RxAutomationFieldName.Length == 0))
@@ -47,6 +43,7 @@ namespace JiraReporter
         issues = JiraReporter.getJiraIssues("'" + config.RxAutomationFieldName + "' ~ '" + tc.Name + "'");
       }
 
+      // if no issues were found, create one; otherwise reopen existing ones
       if (tc.Status == Ranorex.Core.Reporting.ActivityStatus.Failed)
       {
         bool isEmpty = true;
@@ -68,6 +65,7 @@ namespace JiraReporter
           createIssue(tc);
         }
       }
+      // otherwise, if the test case was successful, close the issues
       else if (tc.Status == Ranorex.Core.Reporting.ActivityStatus.Success)
       {
         foreach (Issue issue in issues)

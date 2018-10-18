@@ -1,35 +1,28 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Ranorex_JiraIntegration</id>
-    <title>Ranorex Jira Reporter</title>
-    <version>8.0.0.1</version>
+    <id>Ranorex.Jira</id>
+    <title>Ranorex Jira reporting modules</title>
+    <version>0.0.1</version>
     <authors>Ranorex GmbH</authors>
     <owners>Ranorex GmbH</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
       Package that integrates Jira functionality into the Ranorex system.
     </description>
-    <copyright>Copyright 2017</copyright>
-    <tags>Ranorex Jira</tags>
+    <copyright>Copyright 2018</copyright>
+    <tags>Ranorex Jira Atlassian</tags>
     <language>en-US</language>
     <!-- NuGet package dependency -->
     <dependencies>
-      <!--<dependency id="Atlassian.SDK" version="10.0.0" />
-	  <dependency id="Newtonsoft.Json" version="9.0.1" />
-	  <dependency id="RestSharp" version="106.1.0" />-->
+      <dependency id="Atlassian.SDK" version="10.4.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.2" />
+      <dependency id="RestSharp" version="106.5.4" />
     </dependencies>
   </metadata>
+
   <files>
-    <file src="Ranorex_JiraIntegration.dll" target="lib\net45" />
-	<file src="Ranorex_JiraIntegration.dll" target="lib\net452" />
-	<file src="Ranorex_JiraIntegration.dll" target="lib\net46" />
-	<file src="Ranorex_JiraIntegration.dll" target="lib\net47" />
-	<file src="RanorexJiraCli.exe" target="content" />
-	<file src="lib/net452/Atlassian.Jira.dll" target="content/lib/net452" />
-	<file src="lib/net452/Newtonsoft.Json.dll" target="content/lib/net452" />
-	<file src="lib/net452/RestSharp.dll" target="content/lib/net452" />
-	<file src="Ranorex_JiraIntegration.targets" target="build" />
-	<file src="Ranorex_JiraIntegration.props" target="build" />
+    <file src="modules\**\*.*" target="content\Jira" />
   </files>
+  
 </package>

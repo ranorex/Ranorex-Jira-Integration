@@ -73,35 +73,35 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="legacy\AutoCreateNewIssueIfTestCaseFails.cs" />
-    <Compile Include="legacy\ReOpenExistingIssueIfTestCaseFails.cs" />
-    <Compile Include="legacy\ResolveIssueIfTestCaseSuccessful.cs" />
-    <Compile Include="legacy\UpdateExistingIssueIfTestCaseFails.cs" />
-    <Compile Include="src\AbstractJiraIntegrationClient.cs">
+    <Compile Include="modules\legacy\AutoCreateNewIssueIfTestCaseFails.cs" />
+    <Compile Include="modules\legacy\ReOpenExistingIssueIfTestCaseFails.cs" />
+    <Compile Include="modules\legacy\ResolveIssueIfTestCaseSuccessful.cs" />
+    <Compile Include="modules\legacy\UpdateExistingIssueIfTestCaseFails.cs" />
+    <Compile Include="modules\src\AbstractJiraIntegrationClient.cs">
       <id>fd0630fe-7957-4161-aa44-8a16401cb4c2</id>
     </Compile>
     <Compile Include="AssemblyInfo.cs">
       <id>c8ef42d5-593c-46ec-91c3-cc168bbf7baf</id>
     </Compile>
-    <Compile Include="AutoHandleJiraIntegration.cs">
+    <Compile Include="modules\AutoHandleJiraIntegration.cs">
       <id>455ded0c-2e1d-46a0-8978-0a0c420443c8</id>
     </Compile>
-    <Compile Include="InitializeDefaultConfiguration.cs">
+    <Compile Include="modules\InitializeDefaultConfiguration.cs">
       <id>82cd324f-c5b3-401c-8c2f-872620fb361c</id>
     </Compile>
-    <Compile Include="src\JiraConfiguration.cs">
+    <Compile Include="modules\src\JiraConfiguration.cs">
       <id>490ec2bc-21ab-4605-8183-93a5c4bc85bf</id>
     </Compile>
-    <Compile Include="src\JiraDescriptionItem.cs">
+    <Compile Include="modules\src\JiraDescriptionItem.cs">
       <id>23c3141a-b2d8-446f-8460-d3e6a9460935</id>
     </Compile>
-    <Compile Include="src\JiraFieldHelper.cs">
+    <Compile Include="modules\src\JiraFieldHelper.cs">
       <id>d05eb9e1-840f-4375-8ef5-403809e4e7bb</id>
     </Compile>
-    <Compile Include="src\JiraReporter.cs">
+    <Compile Include="modules\src\JiraReporter.cs">
       <id>ee995c2d-ea43-4af3-9e7b-a52cdb78c1fa</id>
     </Compile>
-    <Compile Include="src\ValueExtractorHelper.cs">
+    <Compile Include="modules\src\ValueExtractorHelper.cs">
       <id>17309da9-e8fd-4b0a-ac5c-871cd0d16497</id>
     </Compile>
   </ItemGroup>

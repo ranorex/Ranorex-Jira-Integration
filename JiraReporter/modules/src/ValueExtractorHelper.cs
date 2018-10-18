@@ -35,18 +35,6 @@ namespace JiraReporter
     /// within a User Code collection.
     /// </summary>
     [UserCodeMethod]
-    public static string getCurrentBrowser()
-    {
-      return "";
-    }
-
-
-    /// <summary>
-    /// This is a placeholder text. Please describe the purpose of the
-    /// user code method here. The method is published to the User Code library
-    /// within a User Code collection.
-    /// </summary>
-    [UserCodeMethod]
     public static void updateSummary()
     {
       ITestContainer tc = TestSuite.CurrentTestContainer;

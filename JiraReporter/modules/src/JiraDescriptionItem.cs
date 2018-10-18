@@ -1,12 +1,4 @@
-﻿/*
- * Created by Ranorex
- * User: sknopper
- * Date: 7/17/2017
- * Time: 2:04 PM
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿
 
 namespace JiraReporter
 {

@@ -1,7 +1,6 @@
 ﻿using Ranorex;
 using Ranorex.Core.Testing;
 using System;
-using System.Collections.Generic;
 
 namespace JiraReporter
 {

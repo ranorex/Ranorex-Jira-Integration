@@ -1,19 +1,10 @@
-﻿/*
- * Created by Ranorex
- * User: cbreit, sknopper
- * Date: 22.10.2014
- * Time: 18:58
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 using Atlassian.Jira;
 using RestSharp;
-using RestSharp.Extensions;
 
 namespace JiraReporter
 {

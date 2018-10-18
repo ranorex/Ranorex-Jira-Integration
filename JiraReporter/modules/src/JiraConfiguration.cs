@@ -1,19 +1,9 @@
-﻿/*
- * Created by Ranorex
- * User: sknopper
- * Date: 7/10/2017
- * Time: 10:14 AM
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿
 using System.Collections.Generic;
 
 namespace JiraReporter
 {
-  /// <summary>
-  /// Description of JiraConfiguration.
-  /// </summary>
+
   public class JiraConfiguration
   {
     private static JiraConfiguration instance;
