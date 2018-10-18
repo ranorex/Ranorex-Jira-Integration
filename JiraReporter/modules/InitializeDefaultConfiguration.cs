@@ -192,9 +192,14 @@ namespace JiraReporter
 
       if (this.jiraIssuePriority != null)
       {
-        config.JiraIssuePriority = jiraIssuePriority;
+        config.JiraIssuePriority = this.jiraIssuePriority;
       }
 
+      if (this.jiraEnvironment != null)
+      {
+        config.JiraEnvironment = this.jiraEnvironment;
+      }
+      
       initialConnect();
     }
 

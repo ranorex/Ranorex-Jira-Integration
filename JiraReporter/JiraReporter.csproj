@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{FC2065F9-928F-4E6F-8AB6-948179CA1DA6}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <TargetFrameworkProfile />
-    <RanorexTargetsPath>$(MSBuildExtensionsPath)\Ranorex$(RanorexVersion)\Ranorex.MSBuild.Targets</RanorexTargetsPath>
+    <RanorexTargetsPath>$(MSBuildProgramFiles32)\MSBuild\Ranorex$(RanorexVersion)\Ranorex.MSBuild.Targets</RanorexTargetsPath>
     <NoWin32Manifest>False</NoWin32Manifest>
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
@@ -61,8 +61,68 @@
       <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ranorex.Bootstrapper">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Ranorex.Core">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Ranorex 8.3\Bin\Ranorex.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ranorex.Core.Resolver">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Cef">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.ChromeWeb">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Delphi">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.FirefoxWeb">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Flex">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Java">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Mobile">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Msaa">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Office">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Qt">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.RawText">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Sap">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Uia">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Web">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.WebDriver">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Win32">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.WinForms">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Ranorex.Plugin.Wpf">
+      <Private>False</Private>
     </Reference>
     <Reference Include="RestSharp, Version=106.5.4.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>packages\RestSharp.106.5.4\lib\net452\RestSharp.dll</HintPath>
@@ -73,10 +133,18 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="modules\legacy\AutoCreateNewIssueIfTestCaseFails.cs" />
-    <Compile Include="modules\legacy\ReOpenExistingIssueIfTestCaseFails.cs" />
-    <Compile Include="modules\legacy\ResolveIssueIfTestCaseSuccessful.cs" />
-    <Compile Include="modules\legacy\UpdateExistingIssueIfTestCaseFails.cs" />
+    <Compile Include="modules\legacy\AutoCreateNewIssueIfTestCaseFails.cs">
+      <id>5fa493d9-9c4f-424d-9685-a4061c0aaa16</id>
+    </Compile>
+    <Compile Include="modules\legacy\ReOpenExistingIssueIfTestCaseFails.cs">
+      <id>1370c573-cdf9-4ea3-a979-23e6ecb0c292</id>
+    </Compile>
+    <Compile Include="modules\legacy\ResolveIssueIfTestCaseSuccessful.cs">
+      <id>9d36869f-81fa-4ced-8c71-946778f2bdaf</id>
+    </Compile>
+    <Compile Include="modules\legacy\UpdateExistingIssueIfTestCaseFails.cs">
+      <id>7091f30c-914a-440c-b435-c65c0624b5e9</id>
+    </Compile>
     <Compile Include="modules\src\AbstractJiraIntegrationClient.cs">
       <id>fd0630fe-7957-4161-aa44-8a16401cb4c2</id>
     </Compile>
@@ -109,7 +177,9 @@
     <None Include="app.config">
       <id>eed2ee5d-2ad8-4bbc-91f0-03c3e225641d</id>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <id>cef24cc0-d004-4446-ba68-4b37e1e79a85</id>
+    </None>
     <None Include="Ranorex_JiraIntegration.nuspec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

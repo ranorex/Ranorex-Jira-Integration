@@ -62,7 +62,7 @@ namespace JiraReporter
     }
 
     [UserCodeMethod]
-    public static void clearDescription(string line)
+    public static void clearDescription()
     {
       JiraConfiguration config = JiraConfiguration.Instance;
       config.JiraDescription.Clear();
