@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>JiraReporter</RootNamespace>
     <AssemblyName>Ranorex_JiraIntegration</AssemblyName>
-    <RanorexVersion>8.0</RanorexVersion>
+    <RanorexVersion>8.3</RanorexVersion>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <projectdefaultrepository>6DAA0E69-EBD0-40DF-B6D1-8546891CC1DE</projectdefaultrepository>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
@@ -53,27 +53,31 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="Atlassian.Jira, Version=10.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\net452\Atlassian.Jira.dll</HintPath>
+    <Reference Include="Atlassian.Jira, Version=10.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Atlassian.SDK.10.4.0\lib\net452\Atlassian.Jira.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\net452\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Ranorex.Core">
-      <HintPath>..\..\..\Program Files (x86)\Ranorex 8.0\Bin\Ranorex.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Ranorex 8.3\Bin\Ranorex.Core.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=106.1.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\net452\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=106.5.4.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>packages\RestSharp.106.5.4\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractJiraIntegrationClient.cs">
+    <Compile Include="legacy\AutoCreateNewIssueIfTestCaseFails.cs" />
+    <Compile Include="legacy\ReOpenExistingIssueIfTestCaseFails.cs" />
+    <Compile Include="legacy\ResolveIssueIfTestCaseSuccessful.cs" />
+    <Compile Include="legacy\UpdateExistingIssueIfTestCaseFails.cs" />
+    <Compile Include="src\AbstractJiraIntegrationClient.cs">
       <id>fd0630fe-7957-4161-aa44-8a16401cb4c2</id>
     </Compile>
     <Compile Include="AssemblyInfo.cs">
@@ -85,59 +89,27 @@
     <Compile Include="InitializeDefaultConfiguration.cs">
       <id>82cd324f-c5b3-401c-8c2f-872620fb361c</id>
     </Compile>
-    <Compile Include="JiraConfiguration.cs">
+    <Compile Include="src\JiraConfiguration.cs">
       <id>490ec2bc-21ab-4605-8183-93a5c4bc85bf</id>
     </Compile>
-    <Compile Include="JiraDescriptionItem.cs">
+    <Compile Include="src\JiraDescriptionItem.cs">
       <id>23c3141a-b2d8-446f-8460-d3e6a9460935</id>
     </Compile>
-    <Compile Include="JiraFieldHelper.cs">
+    <Compile Include="src\JiraFieldHelper.cs">
       <id>d05eb9e1-840f-4375-8ef5-403809e4e7bb</id>
     </Compile>
-    <Compile Include="OnDemandCreateNewIssueIfTestCaseFails.cs">
-      <id>2a78d451-9400-4c34-bab9-a3e5c5f159ef</id>
-    </Compile>
-    <Compile Include="ResolveIssueIfTestCaseSuccessful.cs">
-      <id>48b344fd-cd21-4dc2-baf5-f5b02252867b</id>
-    </Compile>
-    <Compile Include="AutoCreateNewIssueIfTestCaseFails.cs">
-      <id>7cb8e35a-2381-4eca-aba8-f374383337b7</id>
-    </Compile>
-    <Compile Include="JiraReporter.cs">
+    <Compile Include="src\JiraReporter.cs">
       <id>ee995c2d-ea43-4af3-9e7b-a52cdb78c1fa</id>
     </Compile>
-    <Compile Include="ReOpenExistingIssueIfTestCaseFails.cs">
-      <id>ad391f62-bf22-4b60-9e4e-b68ab6b8da3e</id>
-    </Compile>
-    <Compile Include="UpdateExistingIssueIfTestCaseFails.cs">
-      <id>57e4defc-e6a8-4c43-abf4-d7a69a549777</id>
-    </Compile>
-    <Compile Include="ValueExtractorHelper.cs">
+    <Compile Include="src\ValueExtractorHelper.cs">
       <id>17309da9-e8fd-4b0a-ac5c-871cd0d16497</id>
     </Compile>
-    <Content Include="JiraReporter.rxtmg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <id>db9e69b7-4b9a-4fae-a5f8-74e622d43737</id>
-    </Content>
-    <Content Include="lib\net452\Atlassian.Jira.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="lib\net452\Newtonsoft.Json.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="lib\net452\Newtonsoft.Json.xml" />
-    <Content Include="lib\net452\RestSharp.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
       <id>eed2ee5d-2ad8-4bbc-91f0-03c3e225641d</id>
     </None>
-    <None Include="RanorexJiraCli.exe">
-      <id>3469f02b-a87c-46c7-9290-f3f98bfdb956</id>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="packages.config" />
     <None Include="Ranorex_JiraIntegration.nuspec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
