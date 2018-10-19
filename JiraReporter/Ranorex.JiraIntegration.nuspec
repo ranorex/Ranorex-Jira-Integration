@@ -3,9 +3,11 @@
   <metadata>
     <id>Ranorex.Jira</id>
     <title>Ranorex Jira reporting modules</title>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <authors>Ranorex GmbH</authors>
     <owners>Ranorex GmbH</owners>
+    <projectUrl>https://github.com/ranorex/Ranorex-Jira-Integration</projectUrl>
+    <iconUrl>https://www.ranorex.com/rx-studio/rx_logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
       Package that integrates Jira functionality into the Ranorex system.
@@ -13,10 +15,13 @@
     <copyright>Copyright 2018</copyright>
     <tags>Ranorex Jira Atlassian</tags>
     <language>en-US</language>
+    <frameworkAssemblies>
+        <frameworkAssembly assemblyName="System" />
+        <frameworkAssembly assemblyName="System.Windows.Forms" />
+    </frameworkAssemblies>
     <!-- NuGet package dependency -->
     <dependencies>
       <dependency id="Atlassian.SDK" version="10.4.0" />
-      <dependency id="Newtonsoft.Json" version="11.0.2" />
       <dependency id="RestSharp" version="106.5.4" />
     </dependencies>
   </metadata>
@@ -24,5 +29,5 @@
   <files>
     <file src="modules\**\*.*" target="content\Jira" />
   </files>
-  
+
 </package>
