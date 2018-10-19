@@ -1,4 +1,4 @@
-﻿
+﻿using Ranorex;
 using Ranorex.Core.Testing;
 
 namespace JiraReporter
@@ -31,6 +31,13 @@ namespace JiraReporter
 
     public void Run()
     {
+      JiraConfiguration config = JiraConfiguration.Instance;
+      if (!config.enabled)
+      {
+        Report.Debug("Jira integration disabled in config!");
+        return;
+      }
+
       var tc = checkTestCase();
 
       if (tc.Status == Ranorex.Core.Reporting.ActivityStatus.Failed)

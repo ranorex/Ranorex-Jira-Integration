@@ -6,26 +6,25 @@ using Ranorex.Core.Testing;
 
 namespace JiraReporter
 {
-  // <summary>
-  /// Description of CreateNewIssueIfTestCaseFails.
-  /// </summary>
   [TestModule("8B73DAD1-CE2B-4FF6-8618-571F7B31FC6D", ModuleType.UserCode, 1)]
   public class AutoHandleJiraIntegration : AbstractJiraIntegrationClient, ITestModule
   {
 
-    /// <summary>
-    /// Constructs a new instance.
-    /// </summary>
     public AutoHandleJiraIntegration()
     {
       // Do not delete - a parameterless constructor is required!
     }
 
-
     public void Run()
     {
-      ITestContainer tc = checkTestCase();
       JiraConfiguration config = JiraConfiguration.Instance;
+      if (!config.enabled)
+      {
+        Report.Debug("Jira integration disabled in config!");
+        return;
+      }
+
+      ITestContainer tc = checkTestCase();
 
       //Try to get issues associated with the test case
       IEnumerable issues = null;
@@ -35,13 +34,11 @@ namespace JiraReporter
         issues = Enumerable.Empty<Issue>();
       }
       else if (config.jqlQueryToConnectIssues.Length > 0)
-      {
         issues = JiraReporter.getJiraIssues(config.jqlQueryToConnectIssues);
-      }
-      else
-      {
+      else if(config.transientConfig.JiraIssueKey.Length > 0)
+        issues = JiraReporter.getJiraIssues("issue="  + config.transientConfig.JiraIssueKey);
+      else 
         issues = JiraReporter.getJiraIssues("'" + config.RxAutomationFieldName + "' ~ '" + tc.Name + "'");
-      }
 
       // if no issues were found, create one; otherwise reopen existing ones
       if (tc.Status == Ranorex.Core.Reporting.ActivityStatus.Failed)
@@ -50,9 +47,7 @@ namespace JiraReporter
         foreach (Issue issue in issues)
         {
           if (!issue.Status.Name.Contains(config.StateReopen))
-          {
             reopenIssue(issue.Key.ToString(), config.StateReopen);
-          }
           else
           {
             Report.Info("Jira issue is already open -- IssueKey: " + issue.Key.ToString() + "; IssueID: " + issue.Key.ToString());
@@ -61,21 +56,17 @@ namespace JiraReporter
           isEmpty = false;
         }
         if (isEmpty)
-        {
           createIssue(tc);
-        }
       }
       // otherwise, if the test case was successful, close the issues
       else if (tc.Status == Ranorex.Core.Reporting.ActivityStatus.Success)
       {
         foreach (Issue issue in issues)
-        {
           if (!issue.Status.Name.Contains(config.StateClosed))
-          {
             resolveIssue(issue.Key.ToString(), config.StateClosed);
-          }
-        }
       }
+
+      config.transientConfig.Clear();
     }
   }
 }

@@ -5,12 +5,18 @@ using Ranorex.Core.Testing;
 
 namespace JiraReporter
 {
-  /// <summary>
-  /// Description of InitializeDefaultConfiguration.
-  /// </summary>
+
   [TestModule("76FF8843-49B3-4968-9C30-CE917AB28D5E", ModuleType.UserCode, 1)]
   public class InitializeDefaultConfiguration : ITestModule
   {
+    string _varEnableJiraIntegration = "default";
+    [TestVariable("47CD5896-A6BA-4D0C-AA37-B1A6E974B214")]
+    public string EnableJiraIntegration
+    {
+      get { return _varEnableJiraIntegration; }
+      set { _varEnableJiraIntegration = value; }
+    }
+
     string _varJiraProjectKey = "";
     [TestVariable("2DC0BBB3-C44A-42B6-A695-9FB1ABFF8D84")]
     public string JiraProjectKey
@@ -145,6 +151,17 @@ namespace JiraReporter
 
       JiraConfiguration config = JiraConfiguration.Instance;
 
+      if (this.EnableJiraIntegration == "default" || this.EnableJiraIntegration.IsEmpty())
+      {
+        config.enabled = false;
+        Report.Warn("Jira integration disabled by default! Please specify the desired state as a paramater!");
+      }
+      else
+      {
+        config.enabled = ToBoolean(this.EnableJiraIntegration);
+      }
+
+
       if (this.JiraProjectKey != null)
       {
         config.JiraProjectKey = this.JiraProjectKey;
@@ -208,6 +225,13 @@ namespace JiraReporter
       try
       {
         JiraConfiguration config = JiraConfiguration.Instance;
+
+        if(!config.enabled)
+        {
+          Report.Debug("Jira integration disabled in config!");
+          return;
+        }
+
         config.ServerUrl = _JiraServerURL;
         config.Password = _JiraPassword;
         config.UserName = _JiraUserName;
@@ -229,5 +253,27 @@ namespace JiraReporter
         Report.Error(e.Message + " (InnerException: " + e.InnerException + " -- " + str + ")");
       }
     }
+
+    private bool ToBoolean(string value)
+    {
+      switch (value.ToLower())
+      {
+        case "true":
+          return true;
+        case "t":
+          return true;
+        case "1":
+          return true;
+        case "0":
+          return false;
+        case "false":
+          return false;
+        case "f":
+          return false;
+        default:
+          throw new InvalidCastException("Can't identify string as a boolean value!");
+      }
+    }
+
   }
 }

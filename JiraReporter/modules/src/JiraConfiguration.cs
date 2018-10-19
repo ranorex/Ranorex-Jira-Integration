@@ -8,6 +8,8 @@ namespace JiraReporter
   {
     private static JiraConfiguration instance;
 
+    public bool enabled { get; set; }
+
     public string ServerUrl { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
@@ -32,6 +34,25 @@ namespace JiraReporter
 
     public string AffectsVersions { get; set; }
     public string FixVersions { get; set; }
+
+    // this content of this configuration gets reset after the "AutoHandleJiraIntegration" is run
+    // it's intended to be used for 
+    public class transientJiraConfig
+    {
+      public string JiraIssueKey { get; set; }
+
+      public transientJiraConfig()
+      {
+        Clear();
+      }
+      
+      public void Clear()
+      {
+        JiraIssueKey = string.Empty;
+      }
+    }
+
+    public transientJiraConfig transientConfig = new transientJiraConfig();
 
     private JiraConfiguration()
     {

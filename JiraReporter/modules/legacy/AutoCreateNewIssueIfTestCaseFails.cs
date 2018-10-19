@@ -1,4 +1,5 @@
-﻿using Ranorex.Core.Testing;
+﻿using Ranorex;
+using Ranorex.Core.Testing;
 
 namespace JiraReporter
 {
@@ -16,11 +17,16 @@ namespace JiraReporter
 
     public void Run()
     {
-      ITestContainer tc = checkTestCase();
+      JiraConfiguration config = JiraConfiguration.Instance;
+      if (!config.enabled)
+      {
+        Report.Debug("Jira integration disabled in config!");
+        return;
+      }
 
+      ITestContainer tc = checkTestCase();
       if (tc.Status == Ranorex.Core.Reporting.ActivityStatus.Failed)
       {
-        JiraConfiguration config = JiraConfiguration.Instance;
         string rxField = config.RxAutomationFieldName;
         string query = config.jqlQueryToConnectIssues;
         config.RxAutomationFieldName = "";

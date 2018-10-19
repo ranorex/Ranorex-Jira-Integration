@@ -221,5 +221,28 @@ namespace JiraReporter
 
       JiraFieldHelper.setLabels(newLabels);
     }
+
+    /// <summary>
+    /// Set the Jira issue key for this test case. 
+    /// <para /> <strong>IMPORTANT:</strong> This value is cleared after a module interacting with Jira (like 'AutoHandleJiraIntegration') is run!
+    /// </summary>
+    [UserCodeMethod]
+    public static void setJiraIssueKey(string key)
+    {
+      JiraConfiguration config = JiraConfiguration.Instance;
+      config.transientConfig.JiraIssueKey = key.Trim();
+      
+    }
+
+    /// <summary>
+    /// Set the global Jira JQL query. 
+    /// </summary>
+    [UserCodeMethod]
+    public static void setJiraJQLQuery(string query)
+    {
+      JiraConfiguration config = JiraConfiguration.Instance;
+      config.jqlQueryToConnectIssues = query;
+    }
+
   }
 }

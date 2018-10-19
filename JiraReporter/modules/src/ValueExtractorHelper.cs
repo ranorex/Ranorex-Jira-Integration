@@ -1,38 +1,18 @@
-﻿/*
- * Created by Ranorex
- * User: sknopper
- * Date: 7/14/2017
- * Time: 9:23 AM
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 
-using WinForms = System.Windows.Forms;
 using Ranorex;
-using Ranorex.Core;
 using Ranorex.Core.Reporting;
 using Ranorex.Core.Testing;
 
 namespace JiraReporter
 {
-  /// <summary>
-  /// Ranorex User Code collection. A collection is used to publish User Code methods to the User Code library.
-  /// </summary>
   [UserCodeCollection]
   public class ValueExtractorHelper
   {
 
     /// <summary>
-    /// This is a placeholder text. Please describe the purpose of the
-    /// user code method here. The method is published to the User Code library
-    /// within a User Code collection.
+    /// This methods updates the summary with the failed action in the current test case.
     /// </summary>
     [UserCodeMethod]
     public static void updateSummary()
@@ -72,9 +52,7 @@ namespace JiraReporter
     }
 
     /// <summary>
-    /// This is a placeholder text. Please describe the purpose of the
-    /// user code method here. The method is published to the User Code library
-    /// within a User Code collection.
+    /// This methods adds all executed steps in the current test case as text to the description and also upload screenshots.
     /// </summary>
     [UserCodeMethod]
     public static void updateDescriptionWithAllStepsMade()

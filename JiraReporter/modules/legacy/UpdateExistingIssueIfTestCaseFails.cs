@@ -52,8 +52,15 @@ namespace JiraReporter
 
     void ITestModule.Run()
     {
-      var tc = TestSuite.CurrentTestContainer;
+      JiraConfiguration config = JiraConfiguration.Instance;
+      if (!config.enabled)
+      {
+        Report.Debug("Jira integration disabled in config!");
+        return;
+      }
 
+
+      var tc = TestSuite.CurrentTestContainer;
       if (tc == null)
       {
         Report.Error("TestCase is 'null'; this usually happens when the module is used outside of testcases (e.g., global teardown).");
