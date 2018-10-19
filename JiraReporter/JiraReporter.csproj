@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ProjectGuid>{FC2065F9-928F-4E6F-8AB6-948179CA1DA6}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>JiraReporter</RootNamespace>
     <AssemblyName>Ranorex_JiraIntegration</AssemblyName>
@@ -41,15 +41,12 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <RegisterForComInterop>False</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <BaseAddress>4194304</BaseAddress>
     <FileAlignment>4096</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
@@ -178,19 +175,6 @@
     </None>
     <None Include="packages.config">
       <id>cef24cc0-d004-4446-ba68-4b37e1e79a85</id>
-    </None>
-    <None Include="Ranorex_JiraIntegration.nuspec">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-      <id>bca8315c-1188-47f0-ac5b-8e43d40767c1</id>
-    </None>
-    <None Include="Ranorex_JiraIntegration.props">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <id>11bc6a7c-fc62-438c-8898-54989b4d44ce</id>
-    </None>
-    <None Include="Ranorex_JiraIntegration.targets">
-      <id>734c3afa-503c-4afb-a842-4b62bdbf53c7</id>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup />
