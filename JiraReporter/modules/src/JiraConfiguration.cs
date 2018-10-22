@@ -17,7 +17,7 @@ namespace JiraReporter
     public string JiraProjectKey { get; set; }
     public string JiraIssueType { get; set; }
     public string JiraSummary { get; set; }
-    public IList<JiraDescriptionItem> JiraDescription { get; set; } = new List<JiraDescriptionItem>();
+    public IList<JiraDescriptionItem> JiraDescription { get; set; }
     public string JiraLabels { get; set; }
     public string StateClosed { get; set; }
     public string StateReopen { get; set; }
@@ -37,11 +37,11 @@ namespace JiraReporter
 
     // this content of this configuration gets reset after the "AutoHandleJiraIntegration" is run
     // it's intended to be used for 
-    public class transientJiraConfig
+    public class TransientJiraConfig
     {
       public string JiraIssueKey { get; set; }
 
-      public transientJiraConfig()
+      public TransientJiraConfig()
       {
         Clear();
       }
@@ -52,10 +52,11 @@ namespace JiraReporter
       }
     }
 
-    public transientJiraConfig transientConfig = new transientJiraConfig();
+    public TransientJiraConfig transientConfig = new TransientJiraConfig();
 
     private JiraConfiguration()
     {
+      JiraDescription = new List<JiraDescriptionItem>();
     }
 
     public static JiraConfiguration Instance
