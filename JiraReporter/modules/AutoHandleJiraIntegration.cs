@@ -29,7 +29,8 @@ namespace JiraReporter
       //Try to get issues associated with the test case
       IEnumerable issues = null;
       if ((config.jqlQueryToConnectIssues == null || config.jqlQueryToConnectIssues.Length == 0)
-          && (config.RxAutomationFieldName == null || config.RxAutomationFieldName.Length == 0))
+          && (config.RxAutomationFieldName == null || config.RxAutomationFieldName.Length == 0)
+          && (config.transientConfig.JiraIssueKey == null || config.transientConfig.JiraIssueKey.Length == 0))
       {
         issues = Enumerable.Empty<Issue>();
       }
