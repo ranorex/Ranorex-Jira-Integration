@@ -151,10 +151,10 @@ namespace JiraReporter
 
       JiraConfiguration config = JiraConfiguration.Instance;
 
-      if (this.EnableJiraIntegration == "default" || this.EnableJiraIntegration.IsEmpty())
+      if (this.EnableJiraIntegration == "default" || string.IsNullOrEmpty(this.EnableJiraIntegration))
       {
         config.enabled = false;
-        Report.Warn("Jira integration disabled by default! Please specify the desired state as a paramater!");
+        Report.Warn("Jira integration disabled by default! Please specify the desired state as a parameter!");
       }
       else
       {
@@ -216,7 +216,7 @@ namespace JiraReporter
       {
         config.JiraEnvironment = this.jiraEnvironment;
       }
-      
+
       initialConnect();
     }
 
