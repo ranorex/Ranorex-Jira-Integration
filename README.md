@@ -1,4 +1,7 @@
-# Ranorex Jira Integration
+# DISCONTINUED Ranorex 9.1.0 ships with an integrated Jira integration that supersedes this project
+www.ranorex.com
+
+## Ranorex Jira Integration [obsolete]
 
 ## What's in this repository?
 
